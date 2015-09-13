@@ -1,9 +1,8 @@
 import cPickle
 from data import *
 
-products = {}
-sales = {}
-#user = 3  # 1 admin 2 manager 3 cashier
+products = {} # Indexed by upc
+sales = {} # Index by time
 
 def startup():
     def load(name):
@@ -15,6 +14,7 @@ def startup():
     load('products')
     load('sales')
 
+    # 1 admin 2 manager 3 cashier
     global user; user = input('Auth user: ')
 
 
@@ -32,17 +32,22 @@ def record_sale(sale):
 def sale():
     upc = None
     parr = []
+    tot = 0
     print 'Process sale\n Enter 0 to end entry'
     while True:
         upc = raw_input('Enter upc: ')
         if upc == '0': break
         try:
-            parr.append(products[upc])
+            product = products[upc]
+            parr.append(product)
+            print product
+            tot += product.price
         except KeyError:
             print 'Product does not exist.'
             continue
 
     if parr:
+        print 'Total $' + str(tot)
         cname = raw_input('Enter customer name: ')
         pmethod = raw_input('Enter payment method: ')
         comment = raw_input('If desired, enter comment: ')

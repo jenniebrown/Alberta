@@ -47,14 +47,15 @@ class Sale(object):
         self.cname = cname
         self.pmethod = pmethod
         self.comment = comment
+        self.cost = sum(i.price for i in self.products)
 
     def __str__(self):
         tmp = ''
         for i in self.products: tmp += (i.name + ', ')
         tmp = tmp[:len(tmp)-2]
 
-        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '  ' + self.pmethod + '\n\t' + tmp + ('\n\t' + self.comment
-                                                                                                                  if self.comment else '')
+        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '\n\t' + self.pmethod + ' $' + str(self.cost) + '\n\t' + tmp + ('\n\t' +
+                                                                                                                self.comment if self.comment else '')
 
     # @staticmethod
     # def load(name='sales.txt'):
