@@ -1,5 +1,9 @@
+import settings
 from time import time
 from datetime import datetime
+from math import ceil
+
+def roundup(n): return ceil(n * 100) / 100.0
 
 class Product(object):
     """Represents product"""
@@ -47,7 +51,7 @@ class Sale(object):
         self.cname = cname
         self.pmethod = pmethod
         self.comment = comment
-        self.cost = sum(i.price for i in self.products)
+        self.cost = roundup(sum(i.price for i in self.products) * (1 + settings.tax))
 
     def __str__(self):
         tmp = ''

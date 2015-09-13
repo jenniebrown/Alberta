@@ -1,3 +1,4 @@
+import settings
 import cPickle
 from data import *
 
@@ -16,7 +17,6 @@ def startup():
 
     # 1 admin 2 manager 3 cashier
     global user; user = input('Auth user: ')
-
 
 def shutdown():
     def dump(name): cPickle.dump(eval(name), open(name, 'w'))
@@ -47,7 +47,7 @@ def sale():
             continue
 
     if parr:
-        print 'Total $' + str(tot)
+        print 'Total $' + str(roundup(tot * settings.tax))
         cname = raw_input('Enter customer name: ')
         pmethod = raw_input('Enter payment method: ')
         comment = raw_input('If desired, enter comment: ')

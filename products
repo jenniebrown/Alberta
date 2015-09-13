@@ -18,17 +18,17 @@ F4.9500000000000002
 sS'stock'
 p9
 I32
-sS'description'
+sS'upc'
 p10
-S'A bucket'
+S'999999999999'
 p11
 sS'name'
 p12
 S'Bucket'
 p13
-sS'upc'
+sS'description'
 p14
-S'999999999999'
+S'A bucket'
 p15
 sbsS'111111111111'
 p16
@@ -42,12 +42,12 @@ F6.2699999999999996
 sg9
 I8
 sg10
-S'A mop'
+S'111111111111'
 p19
 sg12
 S'Mop'
 p20
 sg14
-S'111111111111'
+S'A mop'
 p21
 sbs.

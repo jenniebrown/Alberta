@@ -23,7 +23,7 @@ S'Cash'
 p11
 sS'cost'
 p12
-F6.2699999999999996
+F6.6500000000000004
 sS'products'
 p13
 (lp14
@@ -40,17 +40,17 @@ F6.2699999999999996
 sS'stock'
 p19
 I8
-sS'description'
+sS'upc'
 p20
-S'A mop'
+S'111111111111'
 p21
 sS'name'
 p22
 S'Mop'
 p23
-sS'upc'
+sS'description'
 p24
-S'111111111111'
+S'A mop'
 p25
 sbasS'time'
 p26
@@ -71,7 +71,7 @@ sg10
 S'Cash'
 p31
 sg12
-F16.170000000000002
+F17.149999999999999
 sg13
 (lp32
 g2
@@ -84,13 +84,13 @@ F4.9500000000000002
 sg19
 I32
 sg20
-S'A bucket'
+S'999999999999'
 p35
 sg22
 S'Bucket'
 p36
 sg24
-S'999999999999'
+S'A bucket'
 p37
 sbag33
 ag16
