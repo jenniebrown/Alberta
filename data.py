@@ -53,20 +53,14 @@ class Sale(object):
         self.comment = comment
         self.cost = roundup(sum(i.price for i in self.products) * (1 + settings.tax))
 
+    @property
+    def datetime(self):
+        return datetime.fromtimestamp(self.time)
+    
     def __str__(self):
         tmp = ''
         for i in self.products: tmp += (i.name + ', ')
         tmp = tmp[:len(tmp)-2]
 
-        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '\n\t' + self.pmethod + ' $' + str(self.cost) + '\n\t' + tmp + ('\n\t' +
+        return str(self.datetime) + '  ' + self.cname + '\n\t' + self.pmethod + ' $' + str(self.cost) + '\n\t' + tmp + ('\n\t' +
                                                                                                                 self.comment if self.comment else '')
-
-    # @staticmethod
-    # def load(name='sales.txt'):
-    #     ret = {}
-
-    #     for line in open(name, 'r'):
-    #         arr = [i.strip() for i in line[:len(line)-1].split('\t')]
-    #         ret[arr[0]] = Sale(arr[0], arr[1], arr[2], arr[3]) if len(ret) == 4 else ret[arr[0]] = Sale(arr[0], arr[1], arr[2])
-
-    #     return ret

@@ -1,6 +1,7 @@
 import settings
 import cPickle
 from data import *
+from datetime import datetime, timedelta
 
 products = {} # Indexed by upc
 sales = {} # Index by time
@@ -20,6 +21,10 @@ def startup():
 
 def shutdown():
     def dump(name): cPickle.dump(eval(name), open(name, 'w'))
+
+    for i in sales: # Remove sales more then 14 days old from the sales history
+        if i.datetime < datetime.now()-timedelta(days=14):
+            sales.pop(i)
 
     dump('products')
     dump('sales')
