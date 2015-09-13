@@ -24,6 +24,10 @@ def shutdown():
     dump('products')
     dump('sales')
 
+def record_sale(sale):
+    ''' Add **Sale** ``sale`` to ``sales`` dict '''
+    sales[sale.upc] = sale
+
 startup()
 
 if user == 1:
@@ -34,5 +38,7 @@ if user == 1:
             for i in products.itervalues():
                 print i
         else: break
+# else:
+#     input('')
 
 shutdown()

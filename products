@@ -1,5 +1,5 @@
 (dp1
-S'Mop'
+S'999999999999'
 p2
 ccopy_reg
 _reconstructor
@@ -12,23 +12,25 @@ object
 p5
 NtRp6
 (dp7
-S'price'
+S'description'
 p8
-S'6.27'
+S'A bucket'
 p9
-sS'description'
+sS'price'
 p10
-S'A mop'
-p11
-sS'name'
-p12
-S'Mop'
-p13
+F4.9500000000000002
 sS'stock'
+p11
+I37
+sS'upc'
+p12
+S'999999999999'
+p13
+sS'name'
 p14
-S'12'
+S'Bucket'
 p15
-sbsS'Bucket'
+sbsS'111111111111'
 p16
 g3
 (g4
@@ -36,15 +38,16 @@ g5
 NtRp17
 (dp18
 g8
-S'4.95'
+S'A mop'
 p19
 sg10
-S'A bucket'
-p20
+F6.2699999999999996
+sg11
+I12
 sg12
-S'Bucket'
-p21
+S'111111111111'
+p20
 sg14
-S'37'
-p22
+S'Mop'
+p21
 sbs.

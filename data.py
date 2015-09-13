@@ -2,20 +2,22 @@ from datetime import datetime
 
 class Product(object):
     """Represents product"""
-    def __init__(self, name, price, stock, description):
+    def __init__(self, upc, name, price, stock, description):
         '''
+        * upc (string)
         * name (string)
         * price (float)
         * stock (int)
         * description (string)
         '''
+        self.upc = upc
         self.name = name
         self.price = price
         self.stock = stock
         self.description = description
 
     def __str__(self):
-        return self.name + ' (' + str(self.stock) + ')\n\t$' + str(self.price) + '\n\t' + self.description
+        return self.upc + ': ' + self.name + ' (' + str(self.stock) + ')\n\t$' + str(self.price) + '\n\t' + self.description
 
     def remove(self, num=1):
         self.stock -= num
@@ -26,7 +28,7 @@ class Product(object):
 
         for line in open(name, 'r'):
             arr = [i.strip() for i in line[:len(line)-1].split('\t')]
-            ret[arr[0]] = Product(arr[0], arr[1], arr[2], arr[3])
+            ret[arr[0]] = Product(arr[0], arr[1], float(arr[2]), int(arr[3]), arr[4])
 
         return ret
 
