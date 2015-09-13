@@ -27,6 +27,26 @@ def shutdown():
 def record_sale(sale):
     ''' Add **Sale** ``sale`` to ``sales`` dict '''
     sales[sale.time] = sale
+    for i in sale.products: i.remove()
+
+def sale():
+    upc = None
+    parr = []
+    print 'Process sale\n Enter 0 to end entry'
+    while True:
+        upc = raw_input('Enter upc: ')
+        if upc == '0': break
+        try:
+            parr.append(products[upc])
+        except KeyError:
+            print 'Product does not exist.'
+            continue
+
+    if parr:
+        cname = raw_input('Enter customer name: ')
+        pmethod = raw_input('Enter payment method: ')
+        comment = raw_input('If desired, enter comment: ')
+        record_sale(Sale(parr, cname, pmethod, comment if comment else None)) 
 
 startup()
 
@@ -42,20 +62,8 @@ if user == 1:
                 print i
         else: break
 else:
-    upc = None
-    print 'Process sale\n Enter 0 to quit'
     while True:
-        upc = raw_input('Enter upc: ')
-        if upc == '0': break
-        try:
-            product = products[upc]
-        except KeyError:
-            print 'Product does not exist.'
-            continue
-
-        cname = raw_input('Enter customer name: ')
-        pmethod = raw_input('Enter payment method: ')
-        comment = raw_input('If desired, enter comment: ')
-        record_sale(Sale(product, cname, pmethod, comment if comment else None)) 
+        if raw_input('q to quit: ') == 'q': break
+        sale()
 
 shutdown()

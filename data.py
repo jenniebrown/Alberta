@@ -35,22 +35,26 @@ class Product(object):
 
 class Sale(object):
     ''' Represents Sale '''
-    def __init__(self, product, cname, pmethod, comment=None):
+    def __init__(self, products, cname, pmethod, comment=None):
         '''
-        * product (Product) The product purchased
-        * cname (string)    Customer name
-        * pmethod (string)  Payment method
+        * products (list of Product) The products purchased
+        * cname (string) Customer name
+        * pmethod (string) Payment method
         * comment (string)
         '''
         self.time = time() # Time of sale as seconds since epoch
-        self.product = product
+        self.products = products
         self.cname = cname
         self.pmethod = pmethod
         self.comment = comment
 
     def __str__(self):
-        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '\n\t' + self.product.name + ' ' + self.pmethod + \
-                                                                    ('\n\t' + self.comment if self.comment else '')
+        tmp = ''
+        for i in self.products: tmp += (i.name + ', ')
+        tmp = tmp[:len(tmp)-2]
+
+        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '  ' + self.pmethod + '\n\t' + tmp + ('\n\t' + self.comment
+                                                                                                                  if self.comment else '')
 
     # @staticmethod
     # def load(name='sales.txt'):
