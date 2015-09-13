@@ -1,3 +1,4 @@
+from time import time
 from datetime import datetime
 
 class Product(object):
@@ -41,11 +42,15 @@ class Sale(object):
         * pmethod (string)  Payment method
         * comment (string)
         '''
-        self.time = datetime.now() # Time of sale
+        self.time = time() # Time of sale as seconds since epoch
         self.product = product
         self.cname = cname
         self.pmethod = pmethod
         self.comment = comment
+
+    def __str__(self):
+        return str(datetime.fromtimestamp(self.time)) + '  ' + self.cname + '\n\t' + self.product.name + ' ' + self.pmethod + \
+                                                                    ('\n\t' + self.comment if self.comment else '')
 
     # @staticmethod
     # def load(name='sales.txt'):

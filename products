@@ -12,23 +12,23 @@ object
 p5
 NtRp6
 (dp7
-S'description'
+S'price'
 p8
-S'A bucket'
-p9
-sS'price'
-p10
 F4.9500000000000002
 sS'stock'
-p11
+p9
 I37
 sS'upc'
-p12
+p10
 S'999999999999'
-p13
+p11
 sS'name'
-p14
+p12
 S'Bucket'
+p13
+sS'description'
+p14
+S'A bucket'
 p15
 sbsS'111111111111'
 p16
@@ -38,16 +38,16 @@ g5
 NtRp17
 (dp18
 g8
-S'A mop'
-p19
-sg10
 F6.2699999999999996
-sg11
+sg9
 I12
-sg12
+sg10
 S'111111111111'
+p19
+sg12
+S'Mop'
 p20
 sg14
-S'Mop'
+S'A mop'
 p21
 sbs.
