@@ -52,7 +52,7 @@ def sale():
             continue
 
     if parr:
-        print 'Total $' + str(roundup(tot * settings.tax))
+        print 'Total $' + str(roundup(tot * (1 + settings.tax)))
         cname = raw_input('Enter customer name: ')
         pmethod = raw_input('Enter payment method: ')
         comment = raw_input('If desired, enter comment: ')
