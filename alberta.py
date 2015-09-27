@@ -22,7 +22,6 @@ def startup():
 def shutdown():
     def dump(name): cPickle.dump(eval(name), open(name, 'w'))
 
-    for i in sales.itervalues(): # Remove sales more then 14 days old from the sales history
         if i.datetime < datetime.now()-timedelta(days=14):
             sales.pop(i.time)
 
