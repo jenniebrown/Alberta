@@ -4,6 +4,8 @@ package cse216project;
 
 public class Payment {
     
+    //9/27 make payment class handle the different methods of payments ( credit, debit, money )
+    
     private double amount;
     
     public Payment(Money cashTendered) {
