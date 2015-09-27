@@ -4,8 +4,6 @@ package cse216project;
 
 public class Payment {
     
-    //should we make a Money class or use int as field?
-    //private Money amount;
     private double amount;
     
     public Payment(Money cashTendered) {
