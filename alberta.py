@@ -17,7 +17,7 @@ def startup():
     load('sales')
 
     # 1 admin 2 manager 3 cashier
-    global user; user = input('Auth user: ')
+    #global user; user = input('Auth user: ')
 
 def shutdown():
     def dump(name): cPickle.dump(eval(name), open(name, 'w'))
@@ -57,22 +57,22 @@ def sale():
         comment = raw_input('If desired, enter comment: ')
         record_sale(Sale(parr, cname, pmethod, comment if comment else None)) 
 
-startup()
+# startup()
 
-if user == 1:
-    while True:
-        choice = input('1. Update products\n2. Display products\n3. Display sales\n4. Quit\n')
-        if   choice == 1: products.update(Product.load())
-        elif choice == 2:
-            for i in products.itervalues():
-                print i
-        elif choice == 3:
-            for i in sales.itervalues():
-                print i
-        else: break
-else:
-    while True:
-        if raw_input('q to quit: ') == 'q': break
-        sale()
+# if user == 1:
+#     while True:
+#         choice = input('1. Update products\n2. Display products\n3. Display sales\n4. Quit\n')
+#         if   choice == 1: products.update(Product.load())
+#         elif choice == 2:
+#             for i in products.itervalues():
+#                 print i
+#         elif choice == 3:
+#             for i in sales.itervalues():
+#                 print i
+#         else: break
+# else:
+#     while True:
+#         if raw_input('q to quit: ') == 'q': break
+#         sale()
 
-shutdown()
+# shutdown()
