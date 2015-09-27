@@ -33,6 +33,7 @@ public class Order{
 
     public void completeOrder(){
         complete =true;
+        total = balance + balance*getTax();
 
     }
 
@@ -40,9 +41,10 @@ public class Order{
         return complete;
     }
 
-    public void addLineItem(SalesLineItem item){
+    public void addLineItem(SalesLineItem item, int price){
 
         saleslineitem.add(item);
+        balance+=price;
 
     }
 
