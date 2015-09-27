@@ -56,7 +56,7 @@ public class Order{
     }
 
     public void makePayment(){
-    
+        Payment payment = new Payment(total);
     }
 
     public double getTax(){
