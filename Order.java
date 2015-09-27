@@ -7,10 +7,10 @@ public class Order{
 
     private Date date;
     private Calender time;
-    private int balance;
-    private int total;
-    private int payment;
-    private int tax=.06;
+    private double balance;
+    private double total;
+    private double payment;
+    private double tax;
     private boolean complete;
 
     private List <SalesLineItem> saleslineitem = new ArrayList()<SalesLineItem>;
@@ -20,12 +20,13 @@ public class Order{
         date = new Date();
         //date.toString()
         time = Calender.getinstance();
-        //cal.getTime()
+        //time.getTime()
         complete=false;
+        balance = 0;
         
     }
 
-    public int getBalance(){
+    public double getBalance(){
 
         return balance;
 
@@ -48,7 +49,7 @@ public class Order{
 
     }
 
-    public int getTotal(){
+    public double getTotal(){
 
         return total;
 
@@ -58,8 +59,8 @@ public class Order{
     
     }
 
-    public int getTax(){
-    
+    public double getTax(){
+        tax=.06;
         return tax;
     
     }
