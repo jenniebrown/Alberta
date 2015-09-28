@@ -64,8 +64,8 @@ public class Order{
     }
 
     public boolean verifyPayment(Payment payUp){
-        if(iscomplete() && getTotal()== payUp.getAmount() && !!verify credit!!){
-            payMe = payUp;
+        if(iscomplete() && getTotal()== payUp.getAmount()){ //add machine implementation later
+            payMe = payUp; //
             return true;
         }
         else{
