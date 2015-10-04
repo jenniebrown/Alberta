@@ -7,16 +7,35 @@ public class Payment {
     //9/27 make payment class handle the different methods of payments ( credit, debit, money )
     
     private double amount;
+    private String paymentMethod;
+    private boolean isCredit;
     
-    public Payment(Money cashTendered) {
-        amount = cashTendered;
+    public Payment(String paymentMethod, double amount) {
+        String paymentCase = paymentMethod.toLowerCase();
+        if(paymentCase.matches("cash")) {
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.isCredit = false;
+        }
+        else if (paymentCase.matches("credit")) {
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.isCredit = true;
+        }
     }
-    public Money getAmount () {
+    public double getAmount () {
         return amount;
     }
     
     public verifyCredit () {
         //Need to have concrete validation rules in order to further write
+    if(isCredit == true) {
+        
+    }
+    }
+    
+    public updatePayment(String paymentMethod, double amount) {
+        
     }
     
     public completePayment() {
