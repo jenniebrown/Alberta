@@ -12,27 +12,25 @@ public class Order{
     private double taxRate;
     private boolean completed;
 
-    private List <SalesLineItem> saleslineitem;
+    private List <SalesLineItem> saleslineitems;
 
 
     public Order(){
         date = new Date();
         //date.toString()
-        complete=false;
+        completed = false;
         runningTotal = 0;
-        saleslineitem = new ArrayList()<SalesLineItem>;
-        taxRate = .06;
+        saleslineitems = new ArrayList()<SalesLineItem>;
+        taxRate = 0.06;
         
     }
 
     public double getBalance(){
-
         return runningTotal;
-
     }
 
     public void completeOrder(){
-        complete =true;
+        completed =true;
         getTax();
         getTotal();
     }
@@ -42,17 +40,16 @@ public class Order{
     }
 
     public void addLineItem(Item current, int qty){
-        int counter =0;
-        
+        if (qty <= 0) {
+            System.err.println("Did not enter quantity");
+            return
+        }
+
         SalesLineItem newItem = new SalesLineItem(current, qty);
         
-        while(qty>counter){
-            saleslineitem.add(newItem);
+        for (int i; qty > i; i++){
+            saleslineitems.add(newItem);
             runningTotal+=newItem.getSubtotal();
-            counter++;
-        }
-        if(counter == 0){
-            System.out.println("Did not enter quantity");
         }
 
     }
@@ -65,7 +62,7 @@ public class Order{
 
     public boolean verifyPayment(Payment payUp){
         if(iscomplete() && getTotal()== payUp.getAmount()){ //add machine implementation later
-            payMe = payUp; //
+            payMe = payUp;
             return true;
         }
         else{
@@ -86,9 +83,7 @@ public class Order{
     }
     
     public ArrayList<SalesLineItems> getListFromOrder(){
-    
-        return saleslineitem;
-        
+        return saleslineitems;
     }
     
     
