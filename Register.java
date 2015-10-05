@@ -6,6 +6,7 @@ public class Register
   private ArrayList<Order> salesOfTheDay;
   private double profitMade;
   private Payment localPayment;
+  private DatabaseHandler constantConnection;
   
   public Register()
   {
@@ -14,6 +15,7 @@ public class Register
     this.salesOfTheDay = new ArrayList <Order>();
     this.profitMade = 0.0;
     this.localPayment = null;
+    this.constantConnection = DatabaseHandler.connect();
   }
   
   public void createNewSale()
@@ -21,12 +23,12 @@ public class Register
     currentSale = new Order();
   }
   
-  public void endSale() //What should it do? Show the total? There is no way to close an order
+  public void endSale() 
   {
     currentSale.completeOrder();
   }
   
-  public void enterItem(String id, int quantity) //Order should have a method that allows me to call on it's List<SalesLineItem>'s add()
+  public void enterItem(String id, int quantity) 
   {
     currentSale.addLineItem(catalog.getItem(id), quantity);
   }
@@ -36,7 +38,7 @@ public class Register
     localPayment = new Payment(form, amount);
     if (currentSale.verifyPayment(localPayment))
     {
-      profitMade = currentSale.getTotal();
+      profitMade += currentSale.getTotal();
       updateInventory(currentSale);
       salesOfTheDay.add(currentSale);
     }
@@ -47,9 +49,20 @@ public class Register
     }
   }
   
-  public void updateInventory(Order currentSale)
+  public void updateInventory(Order sale) //Lots of method calls, can be a bit slow.
   {
     ArrayList <SalesLineItem> local= currentSale.getListFromOrder();
-    
+    int quantityChange = 0;
+    for (SalesLineItem x : local)
+    {
+      quantityChange = constantConnection.getInventoryByID(x.getItem().getItemID()) - x.getQuantity();
+      constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
+    }
   }
+  
+  public void cutConnection ()
+  {
+    this.constantConnection.disconnect();
+  }
+  
 }
