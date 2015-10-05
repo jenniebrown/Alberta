@@ -17,29 +17,22 @@ public class Payment {
         this.paymentMethod = paymentMethod;
         this.isCredit = false;
         }
-        else if (paymentCase.matches("credit")) {
-        this.amount = amount;
-        this.paymentMethod = paymentMethod;
-        this.isCredit = true;
-        }
     }
     public double getAmount () {
         return amount;
     }
     
-    public verifyCredit () {
+    //no verifyCredit yet.
+   // public verifyCredit () {
         //Need to have concrete validation rules in order to further write
-    if(isCredit == true) {
-        
-    }
-    }
+   // }
     
-    public updatePayment(String paymentMethod, double amount) {
-        
-    }
-    
-    public completePayment() {
-        
-    }
+//    public updatePayment(String paymentMethod, double amount) {
+//
+//    }
+//    
+//    public completePayment() {
+//        
+//    }
     
 }
