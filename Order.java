@@ -82,7 +82,7 @@ public class Order{
     
     }
     
-    public ArrayList<SalesLineItems> getListFromOrder(){
+    public ArrayList<SalesLineItem> getListFromOrder(){
         return saleslineitems;
     }
     
