@@ -1,5 +1,5 @@
 /*
- * Written by: Bruke Mammo
+ * Written by: Bruke Mammo, modified by Giancarlo Sanguinetti
  * Keeps track of all the potentially
  * available items within the store and
  * also acts like a backup system for
@@ -12,8 +12,12 @@ public class ProductCatalog{
   
   private HashMap<String, Item> wholeList;
   private static ProductCatalog only;
+  private DatabaseHandler connection;
   
-  private ProductCatalog(){};
+  private ProductCatalog()
+  {
+    this.connection = DatabaseHandler.connect();
+  }
   
   public static synchronized ProductCatalog getInstance(){
     if(only == null){
