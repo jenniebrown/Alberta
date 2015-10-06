@@ -135,20 +135,19 @@ public class DatabaseHandler{
      * that match parameter itemID.
      * @return String[] result
      */
-    public String[] getItemInfoByID(int itemID) {
-        String result[] = new String[15];
-        int loopCount = 0;
+    public String getItemInfoByID(int itemID) {
+        String result = "";
         try {
             stmt = c.createStatement();
             String request = "SELECT * FROM product_catalog WHERE ITEM_ID = "+itemID;
             rs = stmt.executeQuery(request);
-            while ( rs.next() ) {
-                int id = rs.getInt("ITEM_ID");
-                String  name = rs.getString("NAME");
-                double price  = rs.getDouble("PRICE");
-                String  desc = rs.getString("DESCRIPTION");
-                result[loopCount] = ""+id+","+name+","+price+","+desc;
-            }
+
+            int id = rs.getInt("ITEM_ID");
+            String  name = rs.getString("NAME");
+            double price  = rs.getDouble("PRICE");
+            String  desc = rs.getString("DESCRIPTION");
+            result = ""+id+","+name+","+price+","+desc;
+
             rs.close();
             stmt.close();
         } catch ( Exception e ) {

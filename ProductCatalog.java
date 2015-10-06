@@ -20,9 +20,10 @@ public class ProductCatalog{
     this.connection = DatabaseHandler.connect();
     String [] currentlyAvailable = connection.getCatalog();
     String [] currentItem;
-    wholeList = new HashMap<String,Item>(currentlyAvailable.length);
+    wholeList = new HashMap<String,Item>();//(currentlyAvailable.length - 1);
     for(String c : currentlyAvailable)
     {
+      if (c == null) continue;
       currentItem = c.split(",");
       int id = Integer.parseInt(currentItem[0]);
       String desc = currentItem[1] + ": " + currentItem [3];
