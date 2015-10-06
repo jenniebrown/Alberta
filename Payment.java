@@ -16,6 +16,7 @@ public class Payment {
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.isCredit = false;
+	
         }
     }
     public double getAmount () {

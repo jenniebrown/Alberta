@@ -63,12 +63,14 @@ public class Register
     localPayment = new Payment(form, amount);
     if (currentSale.verifyPayment(localPayment))
     {
+	System.out.println("localPayment VERIFIED");
       profitMade += currentSale.getTotal();
       updateInventory(currentSale);
       salesOfTheDay.add(currentSale);
     }
     else
     {
+	System.out.println("localPayment NOTVERIFIED");
       localPayment = null;
       currentSale = null;
     }

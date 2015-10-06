@@ -69,7 +69,8 @@ public class Order{
     }
 
     public boolean verifyPayment(Payment payUp){
-        if(this.isComplete()){// && this.getTotal()== payUp.getAmount()){ //add machine implementation later
+	completeOrder();       
+	if(this.isComplete()){// && this.getTotal()== payUp.getAmount()){ //add machine implementation later
             payMe = payUp;
 	    System.out.println("Order Total = "+ getTotal());
             return true;
