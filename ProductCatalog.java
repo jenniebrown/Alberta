@@ -35,7 +35,7 @@ public class ProductCatalog{
       	wholeList.put(id, created);
       }
     }
-    this.connection.disconnect();
+    //this.connection.disconnect();
   }
   
   public static synchronized ProductCatalog getInstance(){

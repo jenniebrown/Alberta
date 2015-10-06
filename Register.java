@@ -6,7 +6,7 @@ public class Register
   private ArrayList<Order> salesOfTheDay;
   private double profitMade;
   private Payment localPayment;
-  private DatabaseHandler constantConnection;
+  public DatabaseHandler constantConnection;
   
  // public static void main(String[] args) {
  //   Register reg = new Register();
@@ -76,7 +76,7 @@ public class Register
     }
   }
   
-  public void updateInventory(Order sale) //Lots of method calls, can be a bit slow.
+  protected void updateInventory(Order sale) //Lots of method calls, can be a bit slow.
   {
     if(sale != null) {
     	System.out.println(sale);

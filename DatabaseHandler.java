@@ -178,7 +178,7 @@ public class DatabaseHandler{
             stmt.executeUpdate(sql);
             c.commit();
 
-            String request = "SELECT * FROM inventory WHERE ITEM_ID = "+id+";" ;
+            String request = "SELECT * FROM product_catalog WHERE ITEM_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
             while ( rs.next() ) {
                int testId = rs.getInt("ITEM_ID");
