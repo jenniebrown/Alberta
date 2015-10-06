@@ -16,7 +16,8 @@ public class Order{
 
     public Order(){
         date = new Date();
-        //date.toString()
+        System.out.println(date);
+	//date.toString()
         completed = false;
         runningTotal = 0;
         saleslineitems = new ArrayList<SalesLineItem>();
@@ -39,31 +40,38 @@ public class Order{
     }
 
     public void addLineItem(Item current, int qty){
-        if (qty <= 0) {
+        System.out.println("Entered addLineItem in SalesLineItem");
+	if (qty <= 0) {
             System.err.println("Did not enter quantity");
             return;
         }
-
+	System.out.println("Making newItem");
         SalesLineItem newItem = new SalesLineItem(current, qty);
-        /*
+        System.out.println("Made newItem");
+	/*
         for (int i; qty > i; i++){
             saleslineitems.add(newItem); 
             runningTotal+=newItem.getSubtotal();
         }
         */
         runningTotal += newItem.getSubtotal();
-        saleslineitems.add(newItem);
+	System.out.println("Running Total = "+runningTotal);
+        System.out.println("Adding newItem");
+	saleslineitems.add(newItem);
+    	System.out.println("Added newItem: "+saleslineitems);
     }
 
     public double getTotal(){
         finalCost = runningTotal + taxTotal;
+	System.out.println("Final Cost (tax+total) = "+finalCost);
         return finalCost;
 
     }
 
     public boolean verifyPayment(Payment payUp){
-        if(this.isComplete() && this.getTotal()== payUp.getAmount()){ //add machine implementation later
+        if(this.isComplete()){// && this.getTotal()== payUp.getAmount()){ //add machine implementation later
             payMe = payUp;
+	    System.out.println("Order Total = "+ getTotal());
             return true;
         }
         else{
@@ -84,9 +92,11 @@ public class Order{
     }
     
     public ArrayList<SalesLineItem> getListFromOrder(){
-        return saleslineitems;
-    }
-    
-    
+        System.out.println("in getListFromOrder()");
+	for(SalesLineItem i : saleslineitems){
+		System.out.println(i);
+    	}
+	return saleslineitems;
+    } 
 
 }

@@ -30,9 +30,9 @@ public class SalesLineItem{
     return this.quantity;
   }
   
-  public static void main(String[] args){
-    Item i = new Item("asdfasd", 12, 12.34);
-    SalesLineItem s = new SalesLineItem(i, 4);
-    System.out.println(s.getSubtotal());
-  }
+//  public static void main(String[] args){
+//    Item i = new Item("asdfasd", 12, 12.34);
+//    SalesLineItem s = new SalesLineItem(i, 4);
+//    System.out.println(s.getSubtotal());
+//  }
 }

@@ -8,9 +8,11 @@ public class DatabaseHandler{
 
     private DatabaseHandler() {
         try {
-            Class.forName("org.sqlite.JDBC");
+            System.out.println("In DBH constructor");
+	    Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:PoS.db");
-            c.setAutoCommit(false);
+            System.out.println("Connection Successful");
+	    c.setAutoCommit(false);
           } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
@@ -43,6 +45,7 @@ public class DatabaseHandler{
     public void disconnect() {
         try {
             c.close();
+	    System.out.println("Database connection closed successfully");
         } catch (Exception e){
             e.printStackTrace();
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -58,7 +61,8 @@ public class DatabaseHandler{
      * @return result
      */
     public String[] getCatalog() {
-        String[] result = new String[15];
+        System.out.println("Entered getCatalog");
+	String[] result = new String[15];
         int loopCount = 0;
         try {
             stmt = c.createStatement();
@@ -71,7 +75,10 @@ public class DatabaseHandler{
                 String  desc = rs.getString("DESCRIPTION");
                 int quant = rs.getInt("QUANTITY");
                 result[loopCount++] = ""+id+","+name+","+price+","+desc+","+quant;
-            }
+            	System.out.println(result[loopCount-1]);
+	    }
+	    System.out.println("Exiting getCatalog");
+	    System.out.println();
             rs.close();
             stmt.close();
         } catch ( Exception e ) {

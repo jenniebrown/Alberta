@@ -10,7 +10,6 @@ public class Item{
   private double price;
   
   public Item(String description, int itemID, double price){
-    
     this.description = description;
     this.itemID = itemID;
     this.price = price;
