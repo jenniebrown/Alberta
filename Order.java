@@ -63,7 +63,7 @@ public class Order{
 
     public double getTotal(){
         finalCost = runningTotal + taxTotal;
-	System.out.println("Final Cost (tax+total) = "+finalCost);
+	//System.out.println("Final Cost (tax+total) = "+finalCost);
         return finalCost;
 
     }

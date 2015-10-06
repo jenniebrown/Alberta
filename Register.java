@@ -2,26 +2,11 @@ import java.util.ArrayList;
 public class Register
 {
   private ProductCatalog catalog;
-  public Order currentSale;
+  private Order currentSale;
   private ArrayList<Order> salesOfTheDay;
   private double profitMade;
   private Payment localPayment;
   public DatabaseHandler constantConnection;
-  
- // public static void main(String[] args) {
- //   Register reg = new Register();
- //   reg.createNewSale();
- //   //Scanner in = new Scanner();
-
- //   //String item = in.next()
-
- //   reg.enterItem("1111", 3);
- //   reg.makePayment("cash", reg.getCurrentSale().getBalance());
- //   System.out.println(reg.getCurrentSale());
- //   reg.updateInventory(reg.getCurrentSale());
-
- //   reg.cutConnection();
- // }
 
   public Register()
   {
