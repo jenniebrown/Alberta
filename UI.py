@@ -31,26 +31,21 @@ def sale():
 					print 'Invalid quanity'
 					qty = None
 			
-			if reg.enterItem(upc, qty) is None: pass#raise KeyError
+			if not reg.enterItem(upc, qty): raise KeyError
 			reg.makePayment("cash", reg.getCurrentSale().getTotal())
 		except (KeyError, ValueError):
 			print 'Product does not exist.'
+			qty = None
 			continue
-	if qty > 1:
+	if qty > 0:
 		reg.endSale()
-		print 'Total $' + reg.getTotal()
-		cname = raw_input('Enter customer name: ')
-		pmethod = raw_input('Enter payment method: ')
-		comment = raw_input('If desired, enter comment: ')
-		s = Sale(parr, cname, pmethod, comment if comment else None)
-		record_sale(s)
+		print 'Total $' + str(reg.getCurrentSale().getTotal())
 
 	return True
 
 
-while True:
-	while sale(): # Run until sale() returns False
-		if reg.getCurrentSale() is None: continue
-		print '$' + str(cash_change(reg.getCurrentSale().getTotal())) + ' owed'
+while sale(): # Run until sale() returns False
+	if reg.getCurrentSale() is None: continue
+	print '$' + str(cash_change(reg.getCurrentSale().getTotal())) + ' owed'
 
 reg.cutConnection()

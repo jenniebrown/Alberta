@@ -36,11 +36,14 @@ public class Register
     currentSale.completeOrder();
   }
   
-  public void enterItem(int id, int quantity) 
+  public boolean enterItem(int id, int quantity) 
   {
     System.out.println("Entering Item");
-    currentSale.addLineItem(catalog.getItem(id), quantity);
+    Item item = catalog.getItem(id);
+    if (item == null) return false; 
+    currentSale.addLineItem(item, quantity);
     System.out.println("Entered Item. Current Sale = "+currentSale);
+    return true;
   }
   
   public void makePayment(String form, Double amount)
