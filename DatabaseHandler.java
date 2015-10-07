@@ -8,10 +8,9 @@ public class DatabaseHandler{
 
     private DatabaseHandler() {
         try {
-            System.out.println("In DBH constructor");
 	    Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:PoS.db");
-            System.out.println("Connection Successful");
+            //System.out.println("Connection Successful");
 	    c.setAutoCommit(false);
           } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -45,7 +44,7 @@ public class DatabaseHandler{
     public void disconnect() {
         try {
             c.close();
-	    System.out.println("Database connection closed successfully");
+	    //System.out.println("Database connection closed successfully");
         } catch (Exception e){
             e.printStackTrace();
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -61,7 +60,6 @@ public class DatabaseHandler{
      * @return result
      */
     public String[] getCatalog() {
-        System.out.println("Entered getCatalog");
 	String[] result = new String[15];
         int loopCount = 0;
         try {
@@ -75,10 +73,7 @@ public class DatabaseHandler{
                 String  desc = rs.getString("DESCRIPTION");
                 int quant = rs.getInt("QUANTITY");
                 result[loopCount++] = ""+id+","+name+","+price+","+desc+","+quant;
-            	System.out.println(result[loopCount-1]);
 	    }
-	    System.out.println("Exiting getCatalog");
-	    System.out.println();
             rs.close();
             stmt.close();
         } catch ( Exception e ) {
@@ -183,8 +178,7 @@ public class DatabaseHandler{
             while ( rs.next() ) {
                int testId = rs.getInt("ITEM_ID");
                int testQuantity = rs.getInt("QUANTITY");
-               System.out.println( "ID = " + testId );
-               System.out.println( "QUANTITY = " + testQuantity);
+               System.out.println( "Product ID " + testId + " quantity updated to " + testQuantity);
                System.out.println();
             }
             rs.close();
@@ -207,13 +201,12 @@ public class DatabaseHandler{
             stmt.executeUpdate(sql);
             c.commit();
 
-            String request = "SELECT ITEM_ID,QUANTITY FROM product_catalog WHERE ITEM_ID = "+id+";" ;
+            String request = "SELECT ITEM_ID,PRICE FROM product_catalog WHERE ITEM_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
             while ( rs.next() ) {
                int testId = rs.getInt("ITEM_ID");
-               int testQuantity = rs.getInt("QUANTITY");
-               System.out.println( "ID = " + testId );
-               System.out.println( "QUANTITY = " + testQuantity);
+               double testPrice = rs.getDouble("PRICE");
+               System.out.println( "Item ID " + testId +" price updated to " + testPrice);
                System.out.println();
             }
             rs.close();
@@ -258,8 +251,7 @@ public class DatabaseHandler{
             while ( rs.next() ) {
                int testId = rs.getInt("ORDER_ID");
                String testDate = rs.getString("DATE");
-               System.out.print( "ID = " + testId );
-               System.out.print( " DATE = " + testDate);
+               System.out.print( "Order " + testId +" updated on " + testDate);
                System.out.println();
             }
             rs.close();

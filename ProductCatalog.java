@@ -18,15 +18,12 @@ public class ProductCatalog{
   private ProductCatalog()
   {
     this.connection = DatabaseHandler.connect();
-    System.out.println("got connection");
     String [] currentlyAvailable = connection.getCatalog();
-    System.out.println(currentlyAvailable[0]+","+currentlyAvailable[1]);
     String [] currentItem;
     wholeList = new HashMap<Integer,Item>();//(currentlyAvailable.length - 1);
     for(String c : currentlyAvailable)
     {
       if (c != null){ 
-      	System.out.println("PC Line 28 currentItem:"+c);
       	currentItem = c.split(",");
       	int id = Integer.parseInt(currentItem[0]);
       	String desc = currentItem[1] + ": " + currentItem[3];
@@ -46,9 +43,7 @@ public class ProductCatalog{
   }
   
   public Item getItem(int id){   
-    System.out.println("Getting item");
     Item item = wholeList.get(id);
-    System.out.println("Got item: "+item);
     return item;     
   }
 

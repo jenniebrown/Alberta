@@ -16,7 +16,6 @@ public class Order{
 
     public Order(){
         date = new Date();
-        System.out.println(date);
 	//date.toString()
         completed = false;
         runningTotal = 0;
@@ -40,14 +39,11 @@ public class Order{
     }
 
     public void addLineItem(Item current, int qty){
-        System.out.println("Entered addLineItem in SalesLineItem");
 	if (qty <= 0) {
             System.err.println("Did not enter quantity");
             return;
         }
-	System.out.println("Making newItem");
         SalesLineItem newItem = new SalesLineItem(current, qty);
-        System.out.println("Made newItem");
 	/*
         for (int i; qty > i; i++){
             saleslineitems.add(newItem); 
@@ -55,10 +51,7 @@ public class Order{
         }
         */
         runningTotal += newItem.getSubtotal();
-	System.out.println("Running Total = "+runningTotal);
-        System.out.println("Adding newItem");
 	saleslineitems.add(newItem);
-    	System.out.println("Added newItem: "+saleslineitems);
     }
 
     public double getTotal(){
@@ -93,10 +86,9 @@ public class Order{
     }
     
     public ArrayList<SalesLineItem> getListFromOrder(){
-        System.out.println("in getListFromOrder()");
-	for(SalesLineItem i : saleslineitems){
-		System.out.println(i);
-    	}
+	//for(SalesLineItem i : saleslineitems){
+	//	System.out.println(i);
+    	//}
 	return saleslineitems;
     } 
 
