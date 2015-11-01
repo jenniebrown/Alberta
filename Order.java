@@ -91,5 +91,26 @@ public class Order{
     	//}
 	return saleslineitems;
     } 
+    
+    public void printReceipt(){
+        //can add print statement for company name address and phone number
+        System.out.println("Company Name");
+        System.out.println("Company Address");
+        System.out.println("Company Number");
+        System.out.println(date.toString());
+        
+        for(SalesLineItem i : saleslineitems){
+            System.out.println(i.getItem().getDescription()+ "("+ i.getQuantity() +"x)"+"\t $"+i.getSubtotal);
+        }
+        
+        System.out.println("Subtotal: $"+ runningTotal);
+        System.out.println("Tax: $"+ getTax());
+        System.out.println("Total: $"+ getTotal());
+        
+        System.out.println("Amount Paid: $"+ payMe.getAmount());
+        
+        System.out.println("Cash Back: $"+ payMe.getAmount()-getTotal());
+    
+    }
 
 }
