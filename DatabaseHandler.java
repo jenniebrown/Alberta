@@ -233,6 +233,7 @@ public class DatabaseHandler{
             String sql = "UPDATE product_catalog set QUANTITY = "+newQuantity+" where ITEM_ID= "+id+";";
             stmt.executeUpdate(sql);
             c.commit();
+            stmt.close();
 
             String request = "SELECT * FROM product_catalog WHERE ITEM_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
