@@ -52,9 +52,65 @@ public class DatabaseHandler{
         }
     }
 
+
+
 //----------------------------------------------------------------------------//
 //----------------------Retrieve Information----------------------------------//
 //----------------------------------------------------------------------------//
+    /**
+     * Returns password for employee with given empID
+     * @param empID
+     * @return employee password
+     */
+    public String getEmpInfo(String empID) {
+        String result = null;
+        try {
+            stmt = c.createStatement();
+            String req = "SELECT EMP_PW FROM employees WHERE EMP_ID = "+ empID;
+            rs = stmt.executeQuery(req);
+            if(rs.next()) {
+                result = rs.getString("EMP_PW");
+            }
+            rs.close();
+            stmt.close();
+        } catch(Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return result;
+    }
+
+    /**
+     * Returns all customer information for customers whose email matches the given input
+     * as an array of strings
+     * @param email
+     * @return array of customer info
+     */
+    public String[] getCustInfo(String cardNumber) {
+        String[] result = new String[8];
+        try {
+            stmt = c.createStatement();
+            String req = "SELECT * FROM customers WHERE CARD_NBR = " + cardNumber;
+            rs = stmt.executeQuery(req);
+            while(rs.next()) {
+                result[0] = ""+rs.getInt("CUST_ID");
+                result[1] = rs.getString("FIRST_NM");
+                result[2] = rs.getString("LAST_NM");
+                result[3] = rs.getString("ADDRESS");
+                result[4] = rs.getString("CITY");
+                result[5] = rs.getString("STATE");
+                result[6] = rs.getString("ZIP");
+                result[7] = rs.getString("EMAIL");
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e){
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return result;
+    }
+
     /**
      * Return all items in catalog where quantity != 0 as array of strings
      * @return result
@@ -82,6 +138,7 @@ public class DatabaseHandler{
         }
         return result;
     }
+
     /**
      * Return all items in catalog as array of strings
      * @return result
@@ -109,6 +166,7 @@ public class DatabaseHandler{
         }
         return result;
     }
+
     /**
      * Get quantity of item in inventory that matches parameter itemID
      * @return quantity
@@ -216,6 +274,7 @@ public class DatabaseHandler{
             System.exit(0);
         }
     }
+
     /**
      * Overloaded method to add order to store_order_history with no cardNumber
      * @param date
@@ -261,4 +320,6 @@ public class DatabaseHandler{
             System.exit(0);
         }
     }
+
+    public void addCustomer(String first, String last, String email, String cardNumber) {}
 }
