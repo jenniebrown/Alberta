@@ -84,6 +84,7 @@ public class Register
         profitMade += currentSale.getFinalTotal();
         addSale();
         updateInventory(currentSale);
+        currentSale.updatePayment(p);
         localPayment = p;
         //TO-DO: Add customer info to database
         return true;
@@ -98,7 +99,7 @@ public class Register
   protected void updateInventory(AbstractSale sale) //Lots of method calls, can be a bit slow.
   {
     if(sale != null) {
-    	ArrayList<AbstractLineItem> local= sale.getItems();
+        ArrayList<AbstractLineItem> local= sale.getItems();
     	int quantityChange = 0;
     	for (AbstractLineItem x : local)
     	{

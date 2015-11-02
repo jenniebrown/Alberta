@@ -46,6 +46,7 @@ public class DatabaseHandler{
     public void disconnect() {
         try {
             c.close();
+            uniqueInstance = null;
 	    //System.out.println("Database connection closed successfully");
         } catch (Exception e){
             e.printStackTrace();

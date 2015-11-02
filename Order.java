@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Order extends AbstractSale{
 
 
-    private Payment payMe;
+    //private Payment payMe;
     //private ArrayList <AbstractLineItem> saleslineitems;
 
 
@@ -85,6 +85,7 @@ public class Order extends AbstractSale{
 
     }
 
+
 //    public void getTax(){
 //        if(isComplete()){
 //            taxTotal = runningTotal*taxRate;
@@ -99,5 +100,16 @@ public class Order extends AbstractSale{
 //    	//}
 //	return items;
 //    }
+
+
+    public ArrayList<AbstractLineItem> getListFromOrder(){
+	//for(SalesLineItem i : saleslineitems){
+	//	System.out.println(i);
+    	//}
+	return items;
+    }
+
+
+
 
 }
