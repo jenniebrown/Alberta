@@ -1,39 +1,57 @@
+package alberta;
+
 /*
  */
 //package cse216project;
 
 public class Payment {
-    
+
     //9/27 make payment class handle the different methods of payments ( credit, debit, money )
-    
-    private double amount;
-    private String paymentMethod;
-    private boolean isCredit;
-    
-    public Payment(String paymentMethod, double amount) {
-        String paymentCase = paymentMethod.toLowerCase();
-        if(paymentCase.matches("cash")) {
-        this.amount = amount;
-        this.paymentMethod = paymentMethod;
-        this.isCredit = false;
-	
+
+    private double amountTendered;
+    private int paymentMethod;
+    private boolean credit;
+    private String cardNumber;
+
+    public Payment(String cardNumber, double amount) {
+        this.credit = true;
+        this.amountTendered = amount;
+        setCardNumber(cardNumber);
+        this.paymentMethod = 2;
+    }
+
+    public Payment(double amount) {
+        this.credit = false;
+        this.amountTendered = amount;
+        this.cardNumber = null;
+        this.paymentMethod = 1;
+    }
+    public double getAmount() {
+        return amountTendered;
+    }
+
+    public boolean isCredit() {return credit;}
+
+    public void setCardNumber(String num) {
+        if(verifyCredit(num)) {
+            this.cardNumber = num;
         }
     }
-    public double getAmount () {
-        return amount;
-    }
-    
+
+    public String getCardNumber() {return this.cardNumber;}
+
     //no verifyCredit yet.
-   // public verifyCredit () {
-        //Need to have concrete validation rules in order to further write
-   // }
-    
+    public boolean verifyCredit (String cardNum) {
+        //TO-DO: implement credit number verification
+        return true;
+    }
+
 //    public updatePayment(String paymentMethod, double amount) {
 //
 //    }
-//    
+//
 //    public completePayment() {
-//        
+//
 //    }
-    
+
 }

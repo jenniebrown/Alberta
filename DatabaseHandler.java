@@ -1,3 +1,5 @@
+package alberta;
+
 import java.sql.*;
 
 public class DatabaseHandler{
