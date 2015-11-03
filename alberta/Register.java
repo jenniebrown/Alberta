@@ -125,6 +125,12 @@ public class Register
       return r;
   }
 
+  public AbstractItem getSaleItemFromCatalog(int upc) {
+      AbstractItem i = catalog.getItem(upc);
+      Item l = new Item(i.getDescription(),i.getItemID(),i.getPrice());
+      return l;
+  }
+
   public void cutConnection ()
   {
     this.constantConnection.disconnect();

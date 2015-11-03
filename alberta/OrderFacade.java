@@ -1,18 +1,18 @@
 package alberta;
 
-public class RentalFacade
+public class OrderFacade
 {
-    private Rental rental;
+    private Order order;
     private Register reg;
-    public RentalFacade(Register reg) {
+    public OrderFacade(Register reg) {
         this.reg = reg;
-        rental = reg.createNewRental();
+        order = reg.createNewOrder();
     }
 
-    public void enterRentalItem(int upc, int quantity) {
-        AbstractItem i = reg.getRentalItemFromCatalog(upc);
-        RentalItem r = (RentalItem)i;
-        rental.addItem(r,quantity);
+    public void enterOrderItem(int upc, int quantity) {
+        AbstractItem i = reg.getSaleItemFromCatalog(upc);
+        Item r = (Item) i;
+        order.addItem(r,quantity);
     }
 
     public boolean checkUPC(int upc) {
@@ -20,12 +20,12 @@ public class RentalFacade
     }
 
     public void completeTransaction() {
-        rental.completeTransaction();
-        reg.setCurrentSale(rental);
+        order.completeTransaction();
+        reg.setCurrentSale(order);
     }
  //-------------this is buggy-----------------------//
     public boolean createCashPayment(double amt) {
-        if(amt >= rental.getFinalTotal()) {
+        if(amt >= order.getFinalTotal()) {
             reg.makePayment("0", amt);
             return true;
         } else {
@@ -33,10 +33,10 @@ public class RentalFacade
         }
     }
     public boolean createPayment(String num) {
-        return reg.makePayment(num, rental.getFinalTotal());
+        return reg.makePayment(num, order.getFinalTotal());
     }
 
     public void displayReceipt() {
-        rental.printReceipt();
+        order.printReceipt();
     }
 }

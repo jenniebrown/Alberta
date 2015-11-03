@@ -16,6 +16,10 @@ public class RentalItem extends AbstractItem
         dueDate = null;
     }
 
+    public RentalItem() {
+        super(null,0,0);
+    }
+
     public int getRentalType() {return rentalType;}
 
     public boolean getCanRent() {return canRent;}

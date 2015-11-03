@@ -32,12 +32,75 @@ public class UserInterface
             switch(op) {
                 case "1":
                     //process sale
+                    System.out.println("Begin new Sale.");
+                    OrderFacade of = new OrderFacade(reg);
+                    boolean repeat = true;
+                    //add items to rental
+                    do {
+                       System.out.print("Enter product upc, or any key to complete transaction: ");
+                       if(!scan.hasNextInt()) {
+                           scan.next();
+                           repeat = false;
+                       } else {
+                           int upc = scan.nextInt();
+                           //check if valid upc
+                           while(!of.checkUPC(upc)) {
+                               System.out.print("Invalid UPC. Try again: ");
+                               upc = scan.nextInt();
+                           }
+                           System.out.print("Enter quantity: ");
+                           int q = scan.nextInt();
+                           while(q < 0) {
+                               System.out.println("Invalid quantity: Try again: ");
+                               q = scan.nextInt();
+                           }
+                           //add item to rental
+                           of.enterOrderItem(upc, q);
+                       }
+                    } while(repeat);
+                    //complete transaction and display order status
+                    of.completeTransaction();
+
+
+                    //take care of payment by choosing payment method
+                    int paymentMethod;
+                    do {
+                        System.out.print("Enter payment method: Press 1 for cash or 2 for credit");
+                        paymentMethod = scan.nextInt();
+                        boolean complete;
+                        switch(paymentMethod) {
+                            case 1:
+                                System.out.print("Enter amount tendered: ");
+                                double amt = scan.nextDouble();
+                                //finish cash payment. create change yada yada
+                                do {
+                                    complete = of.createCashPayment(amt);
+                                }while(!complete);
+                                break;
+                            case 2:
+                                System.out.print("Enter credit card number: ");
+                                String cardNumber = scan.next();
+                                //finish credit payment. verify card number, add customer
+                                do {
+                                    complete = of.createPayment(cardNumber);
+                                }while(!complete);
+                                break;
+                            default:
+                                System.out.println("Invalid payment method. Rentals must use credit.");
+                                break;
+                        }
+                    } while (paymentMethod != 1 && paymentMethod != 2);
+
+                    //once payment is complete, display receipt.
+                    System.out.println("Transaction complete: ");
+                    of.displayReceipt();
+
                     break;
                 case "2":
                     //process rental
                     System.out.println("Begin new rental.");
                     RentalFacade rf = new RentalFacade(reg);
-                    boolean repeat = true;
+                    repeat = true;
                     //add items to rental
                     do {
                        System.out.print("Enter product upc, or any key to complete transaction: ");
@@ -66,21 +129,11 @@ public class UserInterface
 
 
                     //take care of payment by choosing payment method
-                    int paymentMethod;
                     do {
-                        System.out.print("Enter payment method: Press 1 for cash or 2 for credit");
+                        System.out.print("Enter payment method: Press 2 for credit");
                         paymentMethod = scan.nextInt();
                         boolean complete;
                         switch(paymentMethod) {
-                            //TO-DO: fix so that rental does not accept cash
-                            case 1:
-                                System.out.print("Enter amount tendered: ");
-                                double amt = scan.nextDouble();
-                                //finish cash payment. create change yada yada
-                                do {
-                                    complete = rf.createCashPayment(amt);
-                                }while(!complete);
-                                break;
                             case 2:
                                 System.out.print("Enter credit card number: ");
                                 String cardNumber = scan.next();
@@ -90,10 +143,10 @@ public class UserInterface
                                 }while(!complete);
                                 break;
                             default:
-                                System.out.println("Invalid payment method. Please try again.");
+                                System.out.println("Invalid payment method. Rentals must use credit.");
                                 break;
                         }
-                    } while (paymentMethod != 1 && paymentMethod != 2);
+                    } while (paymentMethod != 2);
 
                     //once payment is complete, display receipt.
                     System.out.println("Transaction complete: ");

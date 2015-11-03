@@ -62,24 +62,37 @@ public abstract class AbstractSale
 
     public void printReceipt(){
         //can add print statement for company name address and phone number
-        System.out.println("Company Name");
-        System.out.println("Company Address");
-        System.out.println("Company Number");
+        System.out.println();
+        System.out.println("---------------------------------------------------");
+        System.out.println("\t\tCompany Name");
+        System.out.println("\t\tCompany Address");
+        System.out.println("\t\tCompany Number");
+        System.out.println("---------------------------------------------------");
+        System.out.println();
         System.out.println(date.toString());
-
+        System.out.println();
+        System.out.println("Item Description\tQuantity\tPrice");
         for(AbstractLineItem i : items){
-            System.out.println(i.getItem().getDescription()+ "("+ i.getQuantity() +"x)"+"\t $"+i.getSubtotal());
+            System.out.println(i.getItem().getDescription()+ "\t\t("+ i.getQuantity() +"x)"+"\t\t $"+i.getSubtotal());
         }
+        System.out.println();
+        System.out.println("Subtotal: \t\t"
+            + ""
+            + ""
+            + "\t\t$"+ getBalance());
+        System.out.println("---------------------------------------------------");
+        System.out.println("Tax: \t\t\t\t\t$"+ getFinalTax());
+        System.out.println("Total: \t\t\t\t\t$"+ getFinalTotal());
+        System.out.println("---------------------------------------------------");
+        System.out.println("Amount Paid: \t\t\t\t$"+ payMe.getAmount());
 
-        System.out.println("Subtotal: $"+ getBalance());
-        System.out.println("Tax: $"+ getFinalTax());
-        System.out.println("Total: $"+ getFinalTotal());
-
-        System.out.println("Amount Paid: $"+ payMe.getAmount());
-
-        System.out.println("Cash Back: $"+ (payMe.getAmount()-getFinalTotal()));
+        System.out.println("Cash Back: \t\t\t\t$"+ (payMe.getAmount()-getFinalTotal()));
+        System.out.println();
+        System.out.println();
 
     }
+
+
 
 //---------------------------AbstractMethods----------------------------------//
     //public abstract void addItem(AbstractItem i, int quantity);
@@ -87,6 +100,7 @@ public abstract class AbstractSale
     //public abstract void addItem(AbstractItem i);
 
     public abstract void completeTransaction();
+
 
 //---------------------------ConcreteMethods----------------------------------//
 
