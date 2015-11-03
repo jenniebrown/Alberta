@@ -1,3 +1,4 @@
+package alberta;
 public class Manager extends Cashier {
 	String mPassword;
 
