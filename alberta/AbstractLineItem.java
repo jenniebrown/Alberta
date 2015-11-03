@@ -18,6 +18,10 @@ public abstract class AbstractLineItem
       return this.subtotal;
     }
 
+    public double getItemCost() {
+        return this.item.getPrice();
+    }
+
     public AbstractItem getItem() {
       return this.item;
     }

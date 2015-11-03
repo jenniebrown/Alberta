@@ -6,11 +6,8 @@ import java.util.Date;
 
 public class Rental extends AbstractSale
 {
-    //private ArrayList<AbstractLineItem> items;
-
     public Rental() {
         super();
-        //items = new ArrayList<AbstractLineItem>();
     }
 
 //----------------------------Getters&Setters---------------------------------//
@@ -93,6 +90,40 @@ public class Rental extends AbstractSale
     private double calcTransacTot() {
         setFinalTax(tc.calculateTax(items));
         return getFinalTax() + getBalance();
+    }
+
+    @Override
+    public void printReceipt(){
+        //can add print statement for company name address and phone number
+        System.out.println();
+        System.out.println("---------------------------------------------------");
+        System.out.println("\t\tCompany Name");
+        System.out.println("\t\tCompany Address");
+        System.out.println("\t\tCompany Number");
+        System.out.println("---------------------------------------------------");
+        System.out.println();
+        System.out.println(date.toString());
+        System.out.println();
+        System.out.println("Item Description\tQuantity\tPrice");
+        for(AbstractLineItem i : items){
+            System.out.println(i.getItem().getDescription()+ "\t("+ i.getQuantity() +"x)"+"\t\t $"+i.getSubtotal());
+            if(i.getItem() instanceof RentalItem) {System.out.println("\t Due "+((RentalItem) i.getItem()).getDueDate());}
+        }
+        System.out.println();
+        System.out.println("Subtotal: \t\t"
+            + ""
+            + ""
+            + "\t\t$"+ getBalance());
+        System.out.println("---------------------------------------------------");
+        System.out.println("Tax: \t\t\t\t\t$"+ getFinalTax());
+        System.out.println("Total: \t\t\t\t\t$"+ getFinalTotal());
+        System.out.println("---------------------------------------------------");
+        System.out.println("Amount Paid: \t\t\t\t$"+ payMe.getAmount());
+
+        System.out.println("Cash Back: \t\t\t\t$"+ (payMe.getAmount()-getFinalTotal()));
+        System.out.println();
+        System.out.println();
+
     }
 
 

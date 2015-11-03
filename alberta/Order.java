@@ -16,6 +16,7 @@ public class Order extends AbstractSale{
 
 
 //----------------------------Getters&Setters---------------------------------//
+    public ArrayList<AbstractLineItem> getListFromOrder(){return items;}
 
 //----------------------------Methods-----------------------------------------//
     public void addItem(Item current, int qty){
@@ -30,20 +31,13 @@ public class Order extends AbstractSale{
                 runningTotal+=newItem.getSubtotal();
             }
             */
-        setRunningTotal(newItem.getSubtotal());
+        setRunningTotal(newItem.getSubtotal()+getBalance());
         items.add(newItem);
     }
 
     public void addItem(Item i) {
         addItem(i, 1);
     }
-
-//    public void completeTransaction(int paymentMethod){
-//        setTransactionComplete(true);
-//        setFinalTotal(calcTransacTot());
-//        payMe = new Payment(paymentMethod, getFinalTotal());
-//
-//    }
 
     private double calcTransacTot() {
         setFinalTax(tc.calculateTax(items));
@@ -85,31 +79,18 @@ public class Order extends AbstractSale{
 
     }
 
-
-//    public void getTax(){
-//        if(isComplete()){
-//            taxTotal = runningTotal*taxRate;
-//        }
-//        //if called to early not sure where to shoot program back to
-//
-//    }
-
-//    public ArrayList<AbstractLineItem> getListFromOrder(){
-//	//for(SalesLineItem i : saleslineitems){
-//	//	System.out.println(i);
-//    	//}
-//	return items;
-//    }
-
-
-    public ArrayList<AbstractLineItem> getListFromOrder(){
-	//for(SalesLineItem i : saleslineitems){
-	//	System.out.println(i);
-    	//}
-	return items;
+    public String toString() {
+        StringBuffer r = new StringBuffer();
+        AbstractLineItem it;
+        for(int i = 0; i < items.size(); i++) {
+            it = items.get(i);
+            r.append(it.getItem().getDescription());
+            r.append("\t "+it.getQuantity());
+            r.append("\t"+it.getItem().getPrice());
+            r.append("\n\t\t\t"+it.getSubtotal());
+            r.append("\n");
+        }
+        String result = r.toString();
+        return result;
     }
-
-
-
-
 }
