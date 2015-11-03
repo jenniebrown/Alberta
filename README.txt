@@ -3,3 +3,4 @@ Requirments:
 
 This old (currently run in eclipse):
    Run with jython -J-cp ./:sqlite-jdbc-3.8.11.1.jar UI.py
+
