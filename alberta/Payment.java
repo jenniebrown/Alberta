@@ -1,12 +1,6 @@
 package alberta;
 
-/*
- */
-//package cse216project;
-
 public class Payment {
-
-    //9/27 make payment class handle the different methods of payments ( credit, debit, money )
 
     private double amountTendered;
     private int paymentMethod;
@@ -40,10 +34,19 @@ public class Payment {
 
     public String getCardNumber() {return this.cardNumber;}
 
-    //no verifyCredit yet.
-    public boolean verifyCredit (String cardNum) {
-        //TO-DO: implement credit number verification
-        return true;
+    public boolean verifyCredit (String cardNum) { 
+    	if (cardNum.length() == 16) {
+    		for (int i = 0; i < cardNum.length(); i++) {
+    			char c = cardNum.charAt(i);
+    			if (!Character.isDigit(c)) {
+    				return false;
+    			}
+    		}
+    		return true; //16 digit.
+    	}
+    	else {
+    		return false;
+    	}
     }
 
 //    public updatePayment(String paymentMethod, double amount) {
