@@ -1,3 +1,4 @@
+package alberta;
 public class TestDB {
 	public static void main(String args[]) {
 		DatabaseHandler handler = DatabaseHandler.connect();

@@ -1,3 +1,4 @@
+package alberta;
 public class Cashier extends Person {
 	String cPassword;
 
