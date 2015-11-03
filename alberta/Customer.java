@@ -1,3 +1,4 @@
+package alberta;
 public class Customer extends Person {
 	double moneyAvailable;
 	String paymentForm;
