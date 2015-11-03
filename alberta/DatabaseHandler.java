@@ -25,7 +25,7 @@ public class DatabaseHandler{
      * connection open at a time.
      * @return uniqueInstance
      */
-    public static synchronized DatabaseHandler getInstance() {
+    private static synchronized DatabaseHandler getInstance() {
         if(uniqueInstance == null) {
             uniqueInstance = new DatabaseHandler();
         }
@@ -108,6 +108,32 @@ public class DatabaseHandler{
             rs.close();
             stmt.close();
         } catch (Exception e){
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return result;
+    }
+
+    /**
+     * Return employee data employee type, employee name, and email in array of strings
+     * @param empID
+     * @return employee info
+     */
+    public String[] getEmpData(String empID) {
+        String[] result = new String[4];
+        try {
+            stmt = c.createStatement();
+            String req = "SELECT * FROM employees WHERE EMP_ID = "+empID;
+            rs = stmt.executeQuery(req);
+            if(rs.next()) {
+                result[0] = rs.getString("EMP_TYP_ID");
+                result[1] = rs.getString("FIRST_NM");
+                result[2] = rs.getString("LAST_NM");
+                result[3] = rs.getString("EMAIL");
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
@@ -325,5 +351,80 @@ public class DatabaseHandler{
         }
     }
 
-    public void addCustomer(String first, String last, String email, String cardNumber) {}
+    /**
+     * Add customer to database
+     * @param first
+     * @param last
+     * @param email
+     * @param cardNumber
+     */
+    public void addCustomer(String first, String last, String email, String cardNumber) {
+        try {
+            stmt = c.createStatement();
+            String req = "SELECT max(CUST_ID) FROM customers";
+            rs = stmt.executeQuery(req);
+            int custID = 0;
+            if(rs.next()) {
+                custID = rs.getInt("CUST_ID");
+            }
+            rs.close();
+            stmt.close();
+
+            stmt = c.createStatement();
+            String vals = (++custID)+",'"+cardNumber+"',"+first+",'"+last+"','"+email+"'";
+            String sql = "INSERT INTO customers (CUST_ID,CARD_NBR,FIRST_NM,LAST_NM,EMAIL) "+
+                            "VALUES ("+vals+");";
+            stmt.executeUpdate(sql);
+            c.commit();
+
+            String request = "SELECT FIRST_NM, LAST_NM FROM customers WHERE CUST_ID = "+custID+";" ;
+            rs = stmt.executeQuery(request);
+            while ( rs.next() ) {
+               String testFirst = rs.getString("FIRST_NM");
+               String testLast = rs.getString("LAST_NM");
+               System.out.print( "Customer " + testFirst +" "+ testLast+" added to database");
+               System.out.println();
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Add a new employee to the database
+     * @param first
+     * @param last
+     * @param email
+     * @param id
+     * @param pw
+     * @param type - 1 for manager or 2 for cashier
+     */
+    public void addEmployee(String first, String last, String email, int id, String pw, int type) {
+        try {
+
+            stmt = c.createStatement();
+            String vals = id+","+type+",'"+first+"','"+last+"','"+email+"'";
+            String sql = "INSERT INTO employees (EMP_ID,EMP_TYP_ID,EMP_PW,FIRST_NM,LAST_NM,EMAIL) "+
+                            "VALUES ("+vals+");";
+            stmt.executeUpdate(sql);
+            c.commit();
+
+            String request = "SELECT FIRST_NM, LAST_NM FROM employees WHERE EMP_ID = "+id+";" ;
+            rs = stmt.executeQuery(request);
+            while ( rs.next() ) {
+               String testFirst = rs.getString("FIRST_NM");
+               String testLast = rs.getString("LAST_NM");
+               System.out.print( "Employee " + testFirst +" "+ testLast+" added to database");
+               System.out.println();
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
 }
