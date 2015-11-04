@@ -193,6 +193,7 @@ public class UserInterface
                     } while(repeat);
                     //complete transaction and display order status
                     retFac.completeTransaction();
+                    retFac.displayReceipt();
                     //return
                     break;
                 case "4":

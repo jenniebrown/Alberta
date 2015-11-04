@@ -30,4 +30,8 @@ public class ReturnFacade {
     public void completeTransaction() {
          reg.updateInventory(returning.getRental());
      }
+    
+     public void displayReceipt() {
+        returning.printReceipt();
+    }
 }
