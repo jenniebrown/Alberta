@@ -6,19 +6,37 @@ public class UserInterface
 {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        //Do login:
-        //get username
-        System.out.print("Enter username: ");
-        String username = scan.next();
-        //TO-DO: verify username
-        //get password
-        System.out.print("Enter password: ");
-        String password = scan.next();
-        //TO-DO: verify password
-        //return user
-
-        //for now, let user be manager (type 1); DELETE THIS LATER
-        int userType = 1;
+        DatabaseHandler temporaryConnection = DatabaseHandler.connect();
+        int tries = 0;
+        int userType = -1;
+        
+        while (tries != 2)
+        {
+            System.out.print("Enter Employee ID: ");
+            String employeeID = scan.next();
+            System.out.print("Enter password: ");
+            String password = scan.next();
+            String passwordLookup = temporaryConnection.getEmpPass(employeeID);
+   
+            if ((passwordLookup == null) || (!passwordLookup.equals(password)))
+            {
+                tries++;
+                System.out.println ("Incorrect username or password. Please try again!");
+                if (tries == 2)
+                {
+                    System.out.println ("Too many incorrect attempts! Goodbye!");
+                    System.exit(0);
+                }
+            }
+            else
+            {
+                String [] infoLookup = temporaryConnection.getEmpData(employeeID);
+                System.out.println("Welcome " + infoLookup[1] + " " + infoLookup[2]);
+                userType = Integer.parseInt(infoLookup[0]); 
+                break;
+            }
+        }
+        temporaryConnection.disconnect();
         Register reg = new Register();
         boolean finish = false;
         do {
