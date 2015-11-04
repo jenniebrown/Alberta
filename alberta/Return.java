@@ -18,10 +18,10 @@ public class Return
   public Return (Rental returning, Date returned)
   {
     this.returningRental = returning;
-    this.feeDue = returning.getFeeDue();
+    this.feeDue = returningRental.getFinalTotal();
     this.lateFee = 0.0;
-    this.dateRented = returning.getDateRented();
-    this.dateDue = returning.getDateDue();
+    this.dateRented = returningRental.date; //I hope this is right
+    this.dateDue = Rental
     this.dateReturned = returned;
     this.renterName = returning.getRenter();
     this.receivedPayment = null;

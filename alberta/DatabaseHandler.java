@@ -65,7 +65,7 @@ public class DatabaseHandler{
      * @param empID
      * @return employee password
      */
-    public String getEmpInfo(String empID) {
+    public String getEmpPass(String empID) {
         String result = null;
         try {
             stmt = c.createStatement();
