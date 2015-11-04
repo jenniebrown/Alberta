@@ -2,11 +2,11 @@ package alberta;
 
 import java.util.Scanner;
 
-public class UserInterface
-{
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        DatabaseHandler temporaryConnection = DatabaseHandler.connect();
+public class UserInterface {
+    static Register reg = new Register();
+    static Scanner scan = new Scanner(System.in);
+
+    private static int verifyUser() {
         int tries = 0;
         int userType = -1;
         
@@ -16,7 +16,7 @@ public class UserInterface
             String employeeID = scan.next();
             System.out.print("Enter password: ");
             String password = scan.next();
-            String passwordLookup = temporaryConnection.getEmpPass(employeeID);
+            String passwordLookup = reg.constantConnection.getEmpPass(employeeID);
    
             if ((passwordLookup == null) || (!passwordLookup.equals(password)))
             {
@@ -30,14 +30,17 @@ public class UserInterface
             }
             else
             {
-                String [] infoLookup = temporaryConnection.getEmpData(employeeID);
+                String [] infoLookup = reg.constantConnection.getEmpData(employeeID);
                 System.out.println("Welcome " + infoLookup[1] + " " + infoLookup[2]);
                 userType = Integer.parseInt(infoLookup[0]); 
                 break;
             }
         }
-        temporaryConnection.disconnect();
-        Register reg = new Register();
+        return userType;
+    }
+    
+    public static void main(String[] args) {
+        int userType = verifyUser();
         boolean finish = false;
         do {
             if(userType == 1) {
@@ -172,38 +175,57 @@ public class UserInterface
 
                     break;
                 case "3":
+                    System.out.println ("Begin Return Process");
+                    ReturnFacade retFac = new ReturnFacade(reg);
+                    repeat = true;
+                    //Process Return
+                    do {
+                       System.out.print("Enter product upc of item being returned,"
+                               + " or any key to complete transaction: ");
+                       if(!scan.hasNextInt()) {
+                           scan.next();
+                           repeat = false;
+                       } else {
+                           int upc = scan.nextInt();
+                           //check if valid upc
+                           while(!retFac.checkUPC(upc)) {
+                               System.out.print("Invalid UPC. Try again: ");
+                               upc = scan.nextInt();
+                           }
+                       }
+                    } while(repeat);
+                    //complete transaction and display order status
+                    retFac.completeTransaction();
+                    retFac.displayReceipt();
                     //return
                     break;
                 case "4":
-                    //Commented out until working. just so i can run the prog
-//                    if(userType != 1) {
-//                        System.out.println("Permission denied. Enter credentials to continue or q to quit.");
-//                        System.out.print("username: ");
-//                        String un = scan.next();
-//                        if(un == "q" || un == "Q") {
-//                            break;
-//                        } else {
-//                            //verify username
-//                            System.out.print("password: ");
-//                            String pw = scan.next();
-//                            //verify password
-//                            //if unverified, break;
-//                        }
-//
-//                    }
-//                    //user manage
+                    if (userType != 1) if ((userType = verifyUser()) != 1) break;
+                    //user manage
+                    System.out.print("First name: ");
+                    String fname = scan.next();
+                    System.out.print("Last name: ");
+                    String lname = scan.next();
+                    System.out.print("Email: ");
+                    String email = scan.next();
+                    System.out.print("ID: ");
+                    int id = scan.nextInt();
+                    System.out.print("Password: ");
+                    String pass = scan.next();
+                    System.out.print("User type (int): ");
+                    int utype = scan.nextInt();
+                    
+                    reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
 
                     break;
                 default:
                     finish = true;
             }
-
-
         } while (!finish);
-
         //TO-DO: logout procedure
+        scan.close();
         reg.cutConnection();
-        System.out.print("Logging out...");
+        System.out.println("Logging out...");
         System.exit(0);
     }
 }

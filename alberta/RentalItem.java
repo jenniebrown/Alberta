@@ -1,5 +1,4 @@
 package alberta;
-
 import java.util.Date;
 
 public class RentalItem extends AbstractItem
