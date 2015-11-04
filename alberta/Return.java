@@ -13,7 +13,7 @@ public class Return
   {
     this.returningRental = returning;
     this.lateFee = 0.0; //later should be this.surcharge()
-    this.paidInFull = this.lateFee == 0.0; //Should rely on surcharge
+    this.paidInFull =  (this.lateFee == 0.0); //Should rely on surcharge
   }
   
   /* Getter Methods */
