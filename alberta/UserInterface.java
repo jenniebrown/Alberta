@@ -2,11 +2,11 @@ package alberta;
 
 import java.util.Scanner;
 
-public class UserInterface
-{
+public class UserInterface {
+    static Register reg = new Register();
+    static Scanner scan = new Scanner(System.in);
+
     private static int verifyUser() {
-        Scanner scan = new Scanner(System.in);
-        DatabaseHandler temporaryConnection = DatabaseHandler.connect();
         int tries = 0;
         int userType = -1;
         
@@ -16,7 +16,7 @@ public class UserInterface
             String employeeID = scan.next();
             System.out.print("Enter password: ");
             String password = scan.next();
-            String passwordLookup = temporaryConnection.getEmpPass(employeeID);
+            String passwordLookup = reg.constantConnection.getEmpPass(employeeID);
    
             if ((passwordLookup == null) || (!passwordLookup.equals(password)))
             {
@@ -30,21 +30,17 @@ public class UserInterface
             }
             else
             {
-                String [] infoLookup = temporaryConnection.getEmpData(employeeID);
+                String [] infoLookup = reg.constantConnection.getEmpData(employeeID);
                 System.out.println("Welcome " + infoLookup[1] + " " + infoLookup[2]);
                 userType = Integer.parseInt(infoLookup[0]); 
                 break;
             }
         }
-        temporaryConnection.disconnect(); scan.close();
         return userType;
     }
     
     public static void main(String[] args) {
         int userType = verifyUser();
-        Scanner scan = new Scanner(System.in);
-
-        Register reg = new Register();
         boolean finish = false;
         do {
             if(userType == 1) {
@@ -182,9 +178,23 @@ public class UserInterface
                     //return
                     break;
                 case "4":
-                    if ((userType = verifyUser()) != 1) break;
+                    System.out.println(userType);
+                    if (userType != 1) if ((userType = verifyUser()) != 1) break;
                     //user manage
+                    System.out.print("First name: ");
+                    String fname = scan.next();
+                    System.out.print("Last name: ");
+                    String lname = scan.next();
+                    System.out.print("Email: ");
+                    String email = scan.next();
+                    System.out.print("ID: ");
+                    int id = scan.nextInt();
+                    System.out.print("Password: ");
+                    String pass = scan.next();
+                    System.out.print("User type (int): ");
+                    int utype = scan.nextInt();
                     
+                    reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
 
                     break;
                 default:
@@ -195,6 +205,7 @@ public class UserInterface
         } while (!finish);
 
         //TO-DO: logout procedure
+        scan.close();
         reg.cutConnection();
         System.out.print("Logging out...");
         System.exit(0);
