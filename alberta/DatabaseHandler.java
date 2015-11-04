@@ -266,8 +266,8 @@ public class DatabaseHandler{
             while ( rs.next() ) {
                int testId = rs.getInt("ITEM_ID");
                int testQuantity = rs.getInt("QUANTITY");
-               System.out.println( "Product ID " + testId + " quantity updated to " + testQuantity);
-               System.out.println();
+               //System.out.println( "Product ID " + testId + " quantity updated to " + testQuantity);
+               //System.out.println();
             }
             rs.close();
             stmt.close();

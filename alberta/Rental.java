@@ -115,12 +115,12 @@ public class Rental extends AbstractSale
             + ""
             + "\t\t$"+ getBalance());
         System.out.println("---------------------------------------------------");
-        System.out.println("Tax: \t\t\t\t\t$"+ getFinalTax());
-        System.out.println("Total: \t\t\t\t\t$"+ getFinalTotal());
+        System.out.printf("Tax: \t\t\t\t\t$%.2f\n",getFinalTax());
+        System.out.printf("Total: \t\t\t\t\t$%.2f\n",getFinalTotal());
         System.out.println("---------------------------------------------------");
-        System.out.println("Amount Paid: \t\t\t\t$"+ payMe.getAmount());
+        System.out.printf("Amount Paid: \t\t\t\t$%.2f\n",payMe.getAmount());
 
-        System.out.println("Cash Back: \t\t\t\t$"+ (payMe.getAmount()-getFinalTotal()));
+        System.out.printf("Cash Back: \t\t\t\t$%.2f\n",(payMe.getAmount()-getFinalTotal()));
         System.out.println();
         System.out.println();
 

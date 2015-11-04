@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *  Register class is designed to hold the ProductCatalog instance from startup
  *  to shutdown and to record transactions made during that time.
  *
- *  @author Jennie
+ *  @author Giancarlo
  *  @version Nov 1, 2015
  */
 public class Register
@@ -80,7 +80,7 @@ public class Register
       }
     if (currentSale.verifyPayment(p)){
     	double change = amount - currentSale.getFinalTotal();
-    	System.out.println("Change due: "+change);
+    	//System.out.println("Change due: "+change);
         profitMade += currentSale.getFinalTotal();
         addSale();
         updateInventory(currentSale);
@@ -104,7 +104,7 @@ public class Register
     	for (AbstractLineItem x : local)
     	{
     	  quantityChange = constantConnection.getInventoryByID(x.getItem().getItemID()) - x.getQuantity();
-    	  System.out.println("quantity change calcd");
+    	  //System.out.println("quantity change calcd");
     	  constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
     	}
     	}
