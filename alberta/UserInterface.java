@@ -200,7 +200,6 @@ public class UserInterface {
                     //return
                     break;
                 case "4":
-                    System.out.println(userType);
                     if (userType != 1) if ((userType = verifyUser()) != 1) break;
                     //user manage
                     System.out.print("First name: ");
