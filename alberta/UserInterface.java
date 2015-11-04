@@ -221,8 +221,6 @@ public class UserInterface {
                 default:
                     finish = true;
             }
-
-
         } while (!finish);
 
         //TO-DO: logout procedure
