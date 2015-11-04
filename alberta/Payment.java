@@ -10,7 +10,7 @@ public class Payment {
     public Payment(String cardNumber, double amount) {
         this.credit = true;
         this.amountTendered = amount;
-        setCardNumber(cardNumber);
+        this.cardNumber = cardNumber;
         this.paymentMethod = 2;
     }
 
@@ -34,7 +34,7 @@ public class Payment {
 
     public String getCardNumber() {return this.cardNumber;}
 
-    public boolean verifyCredit (String cardNum) { 
+    public boolean verifyCredit (String cardNum) {
     	if (cardNum.length() == 16) {
     		for (int i = 0; i < cardNum.length(); i++) {
     			char c = cardNum.charAt(i);
