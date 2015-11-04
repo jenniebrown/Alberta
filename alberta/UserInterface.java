@@ -196,6 +196,7 @@ public class UserInterface
 
         //TO-DO: logout procedure
         reg.cutConnection();
-
+        System.out.print("Logging out...");
+        System.exit(0);
     }
 }
