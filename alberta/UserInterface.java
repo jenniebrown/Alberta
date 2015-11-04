@@ -222,11 +222,10 @@ public class UserInterface {
                     finish = true;
             }
         } while (!finish);
-
         //TO-DO: logout procedure
         scan.close();
         reg.cutConnection();
-        System.out.print("Logging out...");
+        System.out.println("Logging out...");
         System.exit(0);
     }
 }
