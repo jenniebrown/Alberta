@@ -51,8 +51,7 @@ public abstract class AbstractSale
         if(!p.isCredit()) {
             return p.getAmount() - this.getFinalTotal() >= 0;
         } else {
-            //TO-DO: fix card verification
-            return true;
+            return p.verifyCredit(p.getCardNumber());
         }
     }
 

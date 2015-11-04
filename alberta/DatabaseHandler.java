@@ -406,7 +406,7 @@ public class DatabaseHandler{
         try {
 
             stmt = c.createStatement();
-            String vals = id+","+type+",'"+first+"','"+last+"','"+email+"'";
+            String vals = id+","+type+",'"+pw+"','"+first+"','"+last+"','"+email+"'";
             String sql = "INSERT INTO employees (EMP_ID,EMP_TYP_ID,EMP_PW,FIRST_NM,LAST_NM,EMAIL) "+
                             "VALUES ("+vals+");";
             stmt.executeUpdate(sql);
