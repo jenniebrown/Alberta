@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class UserInterface
 {
-    public static void main(String[] args) {
+    private static int verifyUser() {
         Scanner scan = new Scanner(System.in);
         DatabaseHandler temporaryConnection = DatabaseHandler.connect();
         int tries = 0;
@@ -36,7 +36,14 @@ public class UserInterface
                 break;
             }
         }
-        temporaryConnection.disconnect();
+        temporaryConnection.disconnect(); scan.close();
+        return userType;
+    }
+    
+    public static void main(String[] args) {
+        int userType = verifyUser();
+        Scanner scan = new Scanner(System.in);
+
         Register reg = new Register();
         boolean finish = false;
         do {
@@ -175,23 +182,9 @@ public class UserInterface
                     //return
                     break;
                 case "4":
-                    //Commented out until working. just so i can run the prog
-//                    if(userType != 1) {
-//                        System.out.println("Permission denied. Enter credentials to continue or q to quit.");
-//                        System.out.print("username: ");
-//                        String un = scan.next();
-//                        if(un == "q" || un == "Q") {
-//                            break;
-//                        } else {
-//                            //verify username
-//                            System.out.print("password: ");
-//                            String pw = scan.next();
-//                            //verify password
-//                            //if unverified, break;
-//                        }
-//
-//                    }
-//                    //user manage
+                    if ((userType = verifyUser()) != 1) break;
+                    //user manage
+                    
 
                     break;
                 default:
