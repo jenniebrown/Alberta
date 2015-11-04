@@ -175,6 +175,28 @@ public class UserInterface {
 
                     break;
                 case "3":
+                    System.out.println ("Begin Return Process");
+                    ReturnFacade retFac = new ReturnFacade(reg);
+                    repeat = true;
+                    //Process Return
+                    do {
+                       System.out.print("Enter product upc of item being returned,"
+                               + " or any key to complete transaction: ");
+                       if(!scan.hasNextInt()) {
+                           scan.next();
+                           repeat = false;
+                       } else {
+                           int upc = scan.nextInt();
+                           //check if valid upc
+                           while(!retFac.checkUPC(upc)) {
+                               System.out.print("Invalid UPC. Try again: ");
+                               upc = scan.nextInt();
+                           }
+                       }
+                    } while(repeat);
+                    //complete transaction and display order status
+                    retFac.completeTransaction();
+                    retFac.displayReceipt();
                     //return
                     break;
                 case "4":
