@@ -202,20 +202,28 @@ public class UserInterface {
                 case "4":
                     if (userType != 1) if ((userType = verifyUser()) != 1) break;
                     //user manage
-                    System.out.print("First name: ");
-                    String fname = scan.next();
-                    System.out.print("Last name: ");
-                    String lname = scan.next();
-                    System.out.print("Email: ");
-                    String email = scan.next();
-                    System.out.print("ID: ");
-                    int id = scan.nextInt();
-                    System.out.print("Password: ");
-                    String pass = scan.next();
-                    System.out.print("User type (int): ");
-                    int utype = scan.nextInt();
-                    
-                    reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
+                    System.out.print("Add or Delete: ");
+                    String val = scan.next().toLowerCase();
+                    if (val.equals("delete")) {
+                        System.out.print("ID: ");
+                        int id = scan.nextInt();
+                        reg.constantConnection.removeEmployee(id);
+                    } else {
+                        System.out.print("First name: ");
+                        String fname = scan.next();
+                        System.out.print("Last name: ");
+                        String lname = scan.next();
+                        System.out.print("Email: ");
+                        String email = scan.next();
+                        System.out.print("ID: ");
+                        int id = scan.nextInt();
+                        System.out.print("Password: ");
+                        String pass = scan.next();
+                        System.out.print("User type (int): ");
+                        int utype = scan.nextInt();
+                        
+                        reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
+                    }
 
                     break;
                 default:
