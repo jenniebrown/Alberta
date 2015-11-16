@@ -393,6 +393,27 @@ public class DatabaseHandler{
         }
     }
 
+
+    /**
+     * Remove employee from database from specified employee id.
+     * @param empID
+     */
+    public void removeEmployee(int empID) {
+        try {
+
+            stmt = c.createStatement();
+            String sql = "DELETE FROM employees WHERE EMP_ID = "+empID;
+            stmt.executeUpdate(sql);
+            c.commit();
+            System.out.print( "Employee " + empID+" removed from database");
+
+            stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
     /**
      * Add a new employee to the database
      * @param first
@@ -427,4 +448,6 @@ public class DatabaseHandler{
             System.exit(0);
         }
     }
+
+
 }
