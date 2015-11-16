@@ -1,6 +1,7 @@
 package alberta;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 // -------------------------------------------------------------------------
 /**
@@ -18,6 +19,8 @@ public class Register
   private double profitMade;
   private Payment localPayment;
   public DatabaseHandler constantConnection;
+  private final int MAX_INT = Integer.MAX_VALUE;
+  private Random oIDGen;
 
   public Register()
   {
@@ -26,6 +29,7 @@ public class Register
     this.salesOfTheDay = new ArrayList <AbstractSale>();
     this.profitMade = 0.0;
     //this.localPayment = null;
+    this.oIDGen = new Random();
     this.constantConnection = DatabaseHandler.connect();
   }
 
@@ -41,18 +45,26 @@ public class Register
   public Order createNewOrder()
   {
     currentSale = new Order();
+    currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
     return (Order)currentSale;
   }
 
   public Rental createNewRental() {
       currentSale = new Rental();
+      currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
       return (Rental)currentSale;
+  }
+  
+  public Return createNewReturn(int originalOrderID, String originalDate) {
+      currentSale = new Return(originalDate, originalOrderID);
+      currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
+      return (Return)currentSale;
   }
 
   public void addSale() {
       salesOfTheDay.add(currentSale);
   }
-
+//Is this even used? 
   public void endSale()
   {
     currentSale.completeTransaction();
@@ -86,7 +98,11 @@ public class Register
         updateInventory(currentSale);
         currentSale.updatePayment(p);
         localPayment = p;
-        //TO-DO: Add customer info to database
+        //TO-DO: ADD order to database history
+        //TO-DO: Add customer info to database, can only do this if cardnumber exists
+        
+       
+        
         return true;
     } else {
     	System.out.println("localPayment NOT VERIFIED");
@@ -103,13 +119,19 @@ public class Register
     	int quantityChange = 0;
     	for (AbstractLineItem x : local)
     	{
-    	  quantityChange = constantConnection.getInventoryByID(x.getItem().getItemID()) - x.getQuantity();
-    	  //System.out.println("quantity change calcd");
-    	  constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
-    	}
-    	}
+            if (sale instanceof Return){ //This allows for increment of inventory
+            quantityChange = constantConnection.getInventoryByID(x.getItem().getItemID()) + x.getQuantity();
+            constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
+            }
+            else{     //This allows for decrement of inventory
+            quantityChange = constantConnection.getInventoryByID(x.getItem().getItemID()) - x.getQuantity();
+            constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
+            }
+        }
+                
+    }
   }
-
+  
   public boolean checkUPC(int upc) {
       if(catalog.getWholeList().containsKey(upc)) {
           return true;
@@ -129,6 +151,11 @@ public class Register
       AbstractItem i = catalog.getItem(upc);
       Item l = new Item(i.getDescription(),i.getItemID(),i.getPrice());
       return l;
+  }
+  
+  public boolean verifyPreviousPurchase(int prevOrderID, String prevDate)
+  {
+      return this.constantConnection.checkAgainstReceipt(prevOrderID, prevDate);
   }
 
   public void cutConnection ()

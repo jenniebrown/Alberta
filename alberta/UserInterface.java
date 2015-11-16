@@ -1,6 +1,7 @@
 package alberta;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class UserInterface {
     static Register reg = new Register();
@@ -175,29 +176,59 @@ public class UserInterface {
 
                     break;
                 case "3":
-                    System.out.println ("Begin Return Process");
-                    ReturnFacade retFac = new ReturnFacade(reg);
-                    repeat = true;
-                    //Process Return
+                    try {
+                        System.out.println ("Begin Return Process. Please have receipt ready");
+                        ReturnFacade returnFac = new ReturnFacade(reg);
+                        //Process Return
+                        System.out.println("Please enter the orderID number from your receipt:");
+                        int oID = scan.nextInt();
+                        System.out.println ("Please enter the date in the format given on the receipt:");
+                        String dateOrder = scan.next();
+                        if (reg.verifyPreviousPurchase(oID, dateOrder))
+                        {
+                            returnFac.setDate(dateOrder);
+                            returnFac.setROrderID(oID);
+                            returnFac.createReturn();
+                            System.out.println ("If returning a rental, press 0. If "
+                                    + "return a defective order, press 1. If returning"
+                                    + "an unwanted order, press 2.");
+                            returnFac.setReturnType(scan.nextInt());
+                            repeat = true;
+                    //add items to return
                     do {
-                       System.out.print("Enter product upc of item being returned,"
-                               + " or any key to complete transaction: ");
+                       System.out.print("Enter product upc of item on receipt"
+                               + ", or any non-number key to complete transaction: ");
                        if(!scan.hasNextInt()) {
                            scan.next();
                            repeat = false;
                        } else {
                            int upc = scan.nextInt();
                            //check if valid upc
-                           while(!retFac.checkUPC(upc)) {
+                           while(!returnFac.checkUPC(upc)) {
                                System.out.print("Invalid UPC. Try again: ");
                                upc = scan.nextInt();
                            }
+                           System.out.print("Enter quantity: ");
+                           int q = scan.nextInt();
+                           while(q < 0) {
+                               System.out.println("Invalid quantity: Try again: ");
+                               q = scan.nextInt();
+                           }
+                           //add item to rental
+                           returnFac.enterOrderItem(upc, q);
                        }
                     } while(repeat);
-                    //complete transaction and display order status
-                    retFac.completeTransaction();
-                    retFac.displayReceipt();
-                    //return
+                    returnFac.completeTransaction();
+                    returnFac.processReturn();
+                    returnFac.displayReceipt();
+                        }
+                        else
+                            System.out.println("Incorrect date or order ID. Ending Return Transaction");
+                    } catch (InputMismatchException i)
+                    {
+                        System.out.println("Input not allowed, ending return transaction");
+                        break;
+                    }
                     break;
                 case "4":
                     if (userType != 1) if ((userType = verifyUser()) != 1) break;

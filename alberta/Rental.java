@@ -96,6 +96,7 @@ public class Rental extends AbstractSale
     public void printReceipt(){
         //can add print statement for company name address and phone number
         System.out.println();
+        System.out.println("Order ID: " + orderID);
         System.out.println("---------------------------------------------------");
         System.out.println("\t\tCompany Name");
         System.out.println("\t\tCompany Address");

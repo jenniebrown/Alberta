@@ -247,6 +247,27 @@ public class DatabaseHandler{
         }
         return result;
     }
+    public boolean checkAgainstReceipt(int orderID, String date){
+        try {
+            String request = "SELECT ORDER_ID, DATE FROM store_order_history WHERE ORDER_ID = "
+                    +orderID+" AND DATE = "+date+";";
+            rs = stmt.executeQuery(request);
+            while (rs.next()) {
+                int testID = rs.getInt("ORDER_ID");
+                String testDate = rs.getString("DATE");
+                String custID = rs.getString("CUST_ID");
+                System.out.println("Order number " +testID+", made on "+date+", by customer with ID"
+                +custID);
+                System.out.println();
+                return true;
+            }
+        }catch (Exception e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return false;
+    }
+
 //----------------------------------------------------------------------------//
 //---------------------------Update Information-------------------------------//
 //----------------------------------------------------------------------------//
@@ -340,7 +361,7 @@ public class DatabaseHandler{
             String request = "SELECT ORDER_ID, DATE FROM store_order_history WHERE ORDER_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
             while ( rs.next() ) {
-               int testId = rs.getInt("ORDER_ID");
+               int testId = rs.getInt("ORDER_ID");  
                String testDate = rs.getString("DATE");
                System.out.print( "Order " + testId +" updated on " + testDate);
                System.out.println();

@@ -15,6 +15,7 @@ public abstract class AbstractSale
     private double finalTax;
     private double finalTotal;
     protected Payment payMe;
+    protected int orderID;
 
     public AbstractSale() {
         transactionComplete = false;
@@ -25,6 +26,7 @@ public abstract class AbstractSale
         finalTax = 0;
         finalTotal = 0;
         items = new ArrayList<AbstractLineItem>();
+        orderID = 0;
     }
 
 //---------------------------Getters&Setters----------------------------------//
@@ -38,6 +40,10 @@ public abstract class AbstractSale
     public double getFinalTotal() {return finalTotal;}
 
     public ArrayList<AbstractLineItem> getItems() {return items;}
+    
+    public int getOrderID() {return orderID;}
+    
+    public void setOrderID(int oID) {this.orderID = oID;}
 
     public void setRunningTotal(double newTotal) {this.runningTotal = newTotal;}
 
@@ -62,6 +68,7 @@ public abstract class AbstractSale
     public void printReceipt(){
         //can add print statement for company name address and phone number
         System.out.println();
+        System.out.println("Order ID: " + orderID);
         System.out.println("---------------------------------------------------");
         System.out.println("\t\tCompany Name");
         System.out.println("\t\tCompany Address");
