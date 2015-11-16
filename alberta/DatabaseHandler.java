@@ -1,6 +1,7 @@
 package alberta;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseHandler{
     private static DatabaseHandler uniqueInstance;
@@ -120,7 +121,7 @@ public class DatabaseHandler{
      * @return employee info
      */
     public String[] getEmpData(String empID) {
-        String[] result = new String[4];
+        String[] result = new String[5];
         try {
             stmt = c.createStatement();
             String req = "SELECT * FROM employees WHERE EMP_ID = "+empID;
@@ -130,6 +131,7 @@ public class DatabaseHandler{
                 result[1] = rs.getString("FIRST_NM");
                 result[2] = rs.getString("LAST_NM");
                 result[3] = rs.getString("EMAIL");
+                result[4] = empID;
             }
             rs.close();
             stmt.close();
@@ -412,6 +414,29 @@ public class DatabaseHandler{
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+    }
+    
+    /**
+     * Get all Employees as ArrayList of String
+     */
+    public ArrayList<String[]> getEmployees() {
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<String[]> emps = new ArrayList<>();
+        try {
+            stmt = c.createStatement();
+            String req = "SELECT EMP_ID FROM employees;";
+            rs = stmt.executeQuery(req);
+            while (rs.next()) {
+                ids.add(rs.getString("EMP_ID"));
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        for (String id : ids) emps.add(getEmpData(id));
+        return emps;
     }
 
     /**

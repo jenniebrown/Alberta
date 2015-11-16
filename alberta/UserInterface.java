@@ -202,12 +202,17 @@ public class UserInterface {
                 case "4":
                     if (userType != 1) if ((userType = verifyUser()) != 1) break;
                     //user manage
-                    System.out.print("Add or Delete: ");
+                    System.out.print("Add, Delete, or View: ");
                     String val = scan.next().toLowerCase();
                     if (val.equals("delete")) {
                         System.out.print("ID: ");
                         int id = scan.nextInt();
                         reg.constantConnection.removeEmployee(id);
+                    } else if (val.equals("view")) {
+                        for (String[] data : reg.constantConnection.getEmployees()) {
+                            System.out.println("-------------------------------");
+                            for (String i : data) System.out.println(i);
+                        } System.out.println("-------------------------------");
                     } else {
                         System.out.print("First name: ");
                         String fname = scan.next();
