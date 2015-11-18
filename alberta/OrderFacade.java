@@ -39,4 +39,8 @@ public class OrderFacade
     public void displayReceipt() {
         order.printReceipt();
     }
+
+    public void updateOrderHistory() {
+        reg.addOrderToHistory(order);
+    }
 }

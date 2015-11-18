@@ -25,12 +25,6 @@ public class Order extends AbstractSale{
                 return;
         }
         SalesLineItem newItem = new SalesLineItem(current, qty);
-        /*
-            for (int i; qty > i; i++){
-                saleslineitems.add(newItem);
-                runningTotal+=newItem.getSubtotal();
-            }
-            */
         setRunningTotal(newItem.getSubtotal()+getBalance());
         items.add(newItem);
     }

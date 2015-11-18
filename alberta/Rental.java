@@ -30,6 +30,14 @@ public class Rental extends AbstractSale
         addItem(i, 1);
     }
 
+    public ArrayList<RentalLineItem> getRentalItems(){
+        ArrayList<RentalLineItem> result = new ArrayList<RentalLineItem>();
+        for(AbstractLineItem i : items) {
+            result.add((RentalLineItem)i);
+        }
+        return result;
+    }
+
     /**
      * Method that calculates and assigns finalTax and finalTotal. Then prints out
      * final items list and total tax and balance due.
