@@ -39,7 +39,15 @@ public class UserInterface {
         }
         return userType;
     }
-    
+    public static int getInt() { //method so we can get an int when needed
+    Scanner sc = new Scanner(System.in);
+    while (!sc.hasNextInt()) {
+        System.out.println("Enter a whole number");
+        sc.next();
+    }
+    return sc.nextInt();
+
+    }
     public static void main(String[] args) {
         int userType = verifyUser();
         boolean finish = false;
@@ -71,8 +79,8 @@ public class UserInterface {
                                upc = scan.nextInt();
                            }
                            System.out.print("Enter quantity: ");
-                           int q = scan.nextInt();
-                           while(q < 0) {
+                           int q = getInt();
+                           while(q < 0) { // could change this to 1 because logically the sale shouldn't go through if they did not buy it
                                System.out.println("Invalid quantity: Try again: ");
                                q = scan.nextInt();
                            }
