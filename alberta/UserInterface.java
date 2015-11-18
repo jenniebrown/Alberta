@@ -72,11 +72,11 @@ public class UserInterface {
                            scan.next();
                            repeat = false;
                        } else {
-                           int upc = scan.nextInt();
+                           int upc = getInt();
                            //check if valid upc
                            while(!of.checkUPC(upc)) {
                                System.out.print("Invalid UPC. Try again: ");
-                               upc = scan.nextInt();
+                               upc = getInt();
                            }
                            System.out.print("Enter quantity: ");
                            int q = getInt();
