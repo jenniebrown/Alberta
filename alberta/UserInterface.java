@@ -40,6 +40,16 @@ public class UserInterface {
         return userType;
     }
 
+    public static int getInt() { //method so we can get an int when needed
+        Scanner sc = new Scanner(System.in);
+        while (!sc.hasNextInt()) {
+            System.out.println("Enter a whole number");
+
+            sc.next();
+        }
+        return sc.nextInt();
+    }
+
     public static void main(String[] args) {
         int userType = verifyUser();
         boolean finish = false;
@@ -52,6 +62,7 @@ public class UserInterface {
 
             String op = scan.next();
             switch(op) {
+//------------------------------ProcessSale-----------------------------------//
                 case "1":
                     //process sale
                     System.out.println("Begin new Sale.");
@@ -130,8 +141,8 @@ public class UserInterface {
                     of.displayReceipt();
 
                     break;
+//---------------------------------ProcessRental------------------------------//
                 case "2":
-                    //process rental
                     System.out.println("Begin new rental.");
                     RentalFacade rf = new RentalFacade(reg);
                     repeat = true;
@@ -184,64 +195,99 @@ public class UserInterface {
 
                     //once payment is complete, display receipt.
                     System.out.println("Transaction complete: ");
+                    rf.updateRentalHistory();
                     rf.displayReceipt();
 
                     break;
+//-----------------------------------Return-----------------------------------//
                 case "3":
                     try {
                         System.out.println ("Begin Return Process. Please have receipt ready");
                         ReturnFacade returnFac = new ReturnFacade(reg);
                         //Process Return
+                        System.out.println ("If returning a rental, press 0. If "
+                            + "returning a defective order, press 1. If returning"
+                            + "an unwanted order, press 2.");
+                        int retType = getInt();
                         System.out.println("Please enter the orderID number from your receipt:");
-                        int oID = scan.nextInt();
-                        System.out.println ("Please enter the date in the format given on the receipt:");
-                        String dateOrder = scan.next();
-                        if (reg.verifyPreviousPurchase(oID, dateOrder))
-                        {
-                            returnFac.setDate(dateOrder);
-                            returnFac.setROrderID(oID);
-                            returnFac.createReturn();
-                            System.out.println ("If returning a rental, press 0. If "
-                                    + "return a defective order, press 1. If returning"
-                                    + "an unwanted order, press 2.");
-                            returnFac.setReturnType(scan.nextInt());
-                            repeat = true;
+                        int oID = getInt();
+
+                        returnFac.setROrderID(oID);
+                        returnFac.createReturn();
+                        returnFac.setReturnType(retType);
+                        repeat = reg.verifyPreviousPurchase(oID,returnFac.getReturn());
+
+
+                        while(repeat) {
+                            System.out.print("Enter product upc of item on receipt"
+                                + ", or any non-number key to complete transaction: ");
+                            if(!scan.hasNextInt()) {
+                                scan.next();
+                                repeat = false;
+                            } else {
+                                int upc = scan.nextInt();
+                                //check if valid upc
+                                while(!returnFac.checkUPC(upc)) {
+                                    System.out.print("Invalid UPC. Try again: ");
+                                    upc = scan.nextInt();
+                                }
+                                System.out.print("Enter quantity: ");
+                                int q = scan.nextInt();
+                                while(q < 0) {
+                                    System.out.println("Invalid quantity: Try again: ");
+                                    q = scan.nextInt();
+                                }
+                                //add item to return
+                                returnFac.enterOrderItem(upc, q);
+                            }
+                        }
+//                        if (reg.verifyPreviousPurchase(oID))
+//                        {
+//                            //returnFac.setDate(dateOrder);
+//                            returnFac.setROrderID(oID);
+//                            returnFac.createReturn();
+//                            System.out.println ("If returning a rental, press 0. If "
+//                                    + "returning a defective order, press 1. If returning"
+//                                    + "an unwanted order, press 2.");
+//                            returnFac.setReturnType(scan.nextInt());
+//                            repeat = true;
                     //add items to return
-                    do {
-                       System.out.print("Enter product upc of item on receipt"
-                               + ", or any non-number key to complete transaction: ");
-                       if(!scan.hasNextInt()) {
-                           scan.next();
-                           repeat = false;
-                       } else {
-                           int upc = scan.nextInt();
-                           //check if valid upc
-                           while(!returnFac.checkUPC(upc)) {
-                               System.out.print("Invalid UPC. Try again: ");
-                               upc = scan.nextInt();
-                           }
-                           System.out.print("Enter quantity: ");
-                           int q = scan.nextInt();
-                           while(q < 0) {
-                               System.out.println("Invalid quantity: Try again: ");
-                               q = scan.nextInt();
-                           }
-                           //add item to rental
-                           returnFac.enterOrderItem(upc, q);
-                       }
-                    } while(repeat);
+//                    do {
+//                       System.out.print("Enter product upc of item on receipt"
+//                               + ", or any non-number key to complete transaction: ");
+//                       if(!scan.hasNextInt()) {
+//                           scan.next();
+//                           repeat = false;
+//                       } else {
+//                           int upc = scan.nextInt();
+//                           //check if valid upc
+//                           while(!returnFac.checkUPC(upc)) {
+//                               System.out.print("Invalid UPC. Try again: ");
+//                               upc = scan.nextInt();
+//                           }
+//                           System.out.print("Enter quantity: ");
+//                           int q = scan.nextInt();
+//                           while(q < 0) {
+//                               System.out.println("Invalid quantity: Try again: ");
+//                               q = scan.nextInt();
+//                           }
+//                           //add item to rental
+//                           returnFac.enterOrderItem(upc, q);
+//                       }
+//                    } while(repeat);
                     returnFac.completeTransaction();
                     returnFac.processReturn();
                     returnFac.displayReceipt();
-                        }
-                        else
-                            System.out.println("Incorrect date or order ID. Ending Return Transaction");
+                        //}
+//                        else
+//                            System.out.println("Incorrect order ID. Ending Return Transaction");
                     } catch (InputMismatchException i)
                     {
                         System.out.println("Input not allowed, ending return transaction");
                         break;
                     }
                     break;
+//------------------------------------UserManagement--------------------------//
                 case "4":
                     if (userType != 1) if ((userType = verifyUser()) != 1) break;
                     //user manage

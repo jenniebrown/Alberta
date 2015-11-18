@@ -10,5 +10,5 @@ public class RentalLineItem extends AbstractLineItem
         this(item,1);
     }
 
-    public RentalItem getItem() {return (RentalItem)this.getItem();}
+    public RentalItem getItem() {return (RentalItem)this.item;}
 }

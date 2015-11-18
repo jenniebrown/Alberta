@@ -36,6 +36,10 @@ public class RentalFacade
         return reg.makePayment(num, rental.getFinalTotal());
     }
 
+    public void updateRentalHistory() {
+        reg.addRentalToHistory(rental);
+    }
+
     public void displayReceipt() {
         rental.printReceipt();
     }

@@ -16,6 +16,7 @@ public class Register
 {
   private ProductCatalog catalog;
   private AbstractSale currentSale;
+  private Rental currentRental;
   private ArrayList<AbstractSale> salesOfTheDay;
   private double profitMade;
   private Payment localPayment;
@@ -37,12 +38,17 @@ public class Register
 
 
 //----------------------Getters&Setters---------------------------------------//
-  public void setCurrentSale(Order current) {
+  public void setCurrentSale(AbstractSale current) {
       this.currentSale = current;
+  }
+
+  public void setCurrentRental(Rental current) {
+      this.currentRental = current;
   }
 
   public AbstractSale getCurrentSale() {return currentSale;}
 
+  public Rental getCurrentRental() {return currentRental;}
 //--------------------------------Methods-------------------------------------//
   public Order createNewOrder()
   {
@@ -143,9 +149,17 @@ public class Register
       return l;
   }
 
-  public boolean verifyPreviousPurchase(int prevOrderID, String prevDate)
+  public boolean verifyPreviousPurchase(int prevOrderID,Return ret)
   {
-      return this.constantConnection.checkAgainstReceipt(prevOrderID, prevDate);
+      String tableName;
+      switch(ret.getRentalOrSale()) {
+          case 0:
+              tableName = "rental_history";
+          default:
+              tableName = "order_history";
+      }
+
+      return this.constantConnection.checkAgainstReceipt(prevOrderID,tableName);
   }
 
   public void cutConnection()

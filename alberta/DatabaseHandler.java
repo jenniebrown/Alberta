@@ -247,17 +247,16 @@ public class DatabaseHandler{
         }
         return result;
     }
-    public boolean checkAgainstReceipt(int orderID, String date){
+    public boolean checkAgainstReceipt(int orderID,String tableName){
         try {
-            String request = "SELECT ORDER_ID, DATE FROM order_history WHERE ORDER_ID = "
-                    +orderID+" AND DATE = "+date+";";
+            String request = "SELECT ORDER_ID,DATE FROM "+tableName+" WHERE ORDER_ID = "
+                    +orderID+";";
             rs = stmt.executeQuery(request);
             while (rs.next()) {
                 int testID = rs.getInt("ORDER_ID");
                 String testDate = rs.getString("DATE");
-                String custID = rs.getString("CUST_ID");
-                System.out.println("Order number " +testID+", made on "+date+", by customer with ID"
-                +custID);
+                //String custID = rs.getString("CUST_ID");
+                System.out.println("Order number " +testID+", made on "+testDate);
                 System.out.println();
                 return true;
             }
@@ -340,39 +339,6 @@ public class DatabaseHandler{
 //        addOrderToHistory(id,date,orderTotal,paymentType,"",custID);
 //    }
 
-    /**
-     * Add order to store_order_history
-     * @param date
-     * @param orderTotal
-     * @param paymentType
-     * @param card
-     * @param custID
-     * @param id
-     */
-    public void addOrderToHistory(int id, String date, double orderTotal, String paymentType, String card, String custID) {
-        try {
-            stmt = c.createStatement();
-            String vals = id+",'"+date+"',"+orderTotal+",'"+paymentType+"','"+card+"','"+custID+"'";
-            String sql = "INSERT INTO order_history (ORDER_ID,DATE,ORDER_TOTAL,PAYMENT_TYPE,CARD_NUMBER,CUSTOMER_ID) "+
-                            "VALUES ("+vals+");";
-            stmt.executeUpdate(sql);
-            c.commit();
-
-            String request = "SELECT ORDER_ID, DATE FROM order_history WHERE ORDER_ID = "+id+";" ;
-            rs = stmt.executeQuery(request);
-            while ( rs.next() ) {
-               int testId = rs.getInt("ORDER_ID");
-               String testDate = rs.getString("DATE");
-               System.out.print( "Order " + testId +" updated on " + testDate);
-               System.out.println();
-            }
-            rs.close();
-            stmt.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
-            System.exit(0);
-        }
-    }
 
     public boolean addRentalToHistory(Rental r) {
         try {
@@ -395,7 +361,8 @@ public class DatabaseHandler{
                 int itemID = i.getItem().getItemID();
                 int q = i.getQuantity();
                 String due = i.getItem().getDueDate().toString();
-                String ins = "INSERT INTO rental_item_history (RENTAL_ID,ITEM_ID,QUANTITY,DUE_DATE"+
+                vals = rentID+","+itemID+","+q+",'"+due+"'";
+                String ins = "INSERT INTO rental_item_history (RENTAL_ID,ITEM_ID,QUANTITY,DUE_DATE)"+
                     "VALUES ("+vals+");";
                 stmt.executeUpdate(ins);
                 c.commit();
