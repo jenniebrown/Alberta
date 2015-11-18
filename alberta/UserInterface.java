@@ -10,7 +10,7 @@ public class UserInterface {
     private static int verifyUser() {
         int tries = 0;
         int userType = -1;
-        
+
         while (tries != 2)
         {
             System.out.print("Enter Employee ID: ");
@@ -18,7 +18,7 @@ public class UserInterface {
             System.out.print("Enter password: ");
             String password = scan.next();
             String passwordLookup = reg.constantConnection.getEmpPass(employeeID);
-   
+
             if ((passwordLookup == null) || (!passwordLookup.equals(password)))
             {
                 tries++;
@@ -33,13 +33,13 @@ public class UserInterface {
             {
                 String [] infoLookup = reg.constantConnection.getEmpData(employeeID);
                 System.out.println("Welcome " + infoLookup[1] + " " + infoLookup[2]);
-                userType = Integer.parseInt(infoLookup[0]); 
+                userType = Integer.parseInt(infoLookup[0]);
                 break;
             }
         }
         return userType;
     }
-    
+
     public static void main(String[] args) {
         int userType = verifyUser();
         boolean finish = false;
@@ -93,28 +93,40 @@ public class UserInterface {
                         switch(paymentMethod) {
                             case 1:
                                 System.out.print("Enter amount tendered: ");
-                                double amt = scan.nextDouble();
+                                double amt;
                                 //finish cash payment. create change yada yada
                                 do {
+                                    amt = scan.nextDouble();
                                     complete = of.createCashPayment(amt);
+                                    if(!complete) {
+                                        System.out.println("Insufficient funds. Try again: ");
+                                    }
                                 }while(!complete);
+
+
                                 break;
                             case 2:
                                 System.out.print("Enter credit card number: ");
-                                String cardNumber = scan.next();
+                                String cardNumber;
                                 //finish credit payment. verify card number, add customer
                                 do {
+                                    cardNumber = scan.next();
                                     complete = of.createPayment(cardNumber);
+                                    if(!complete) {
+                                        System.out.println("Payment not verified. Enter another card: ");
+                                    }
                                 }while(!complete);
                                 break;
                             default:
-                                System.out.println("Invalid payment method. Rentals must use credit.");
+                                System.out.println("Invalid payment method. Try again: ");
                                 break;
                         }
                     } while (paymentMethod != 1 && paymentMethod != 2);
 
                     //once payment is complete, display receipt.
                     System.out.println("Transaction complete: ");
+                    //update database
+                    of.updateOrderHistory();
                     of.displayReceipt();
 
                     break;
@@ -257,7 +269,7 @@ public class UserInterface {
                         String pass = scan.next();
                         System.out.print("User type (int): ");
                         int utype = scan.nextInt();
-                        
+
                         reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
                     }
 

@@ -35,7 +35,7 @@ public class Register
 
 
 //----------------------Getters&Setters---------------------------------------//
-  public void setCurrentSale(AbstractSale current) {
+  public void setCurrentSale(Order current) {
       this.currentSale = current;
   }
 
@@ -54,7 +54,7 @@ public class Register
       currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
       return (Rental)currentSale;
   }
-  
+
   public Return createNewReturn(int originalOrderID, String originalDate) {
       currentSale = new Return(originalDate, originalOrderID);
       currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
@@ -64,23 +64,11 @@ public class Register
   public void addSale() {
       salesOfTheDay.add(currentSale);
   }
-//Is this even used? 
+//Is this even used?
   public void endSale()
   {
     currentSale.completeTransaction();
   }
-
-//  public boolean enterItem(int id, int quantity)
-//  {
-//    AbstractItem item = catalog.getItem(id);
-//    if (item == null) {
-//        return false;
-//    } else {
-//        currentSale.addItem(item, quantity);
-//        //System.out.println("Entered Item. Current Sale = "+currentSale);
-//        return true;
-//    }
-//  }
 
   public boolean makePayment(String cardNumber, double amount)
   {
@@ -100,9 +88,9 @@ public class Register
         localPayment = p;
         //TO-DO: ADD order to database history
         //TO-DO: Add customer info to database, can only do this if cardnumber exists
-        
-       
-        
+
+
+
         return true;
     } else {
     	System.out.println("localPayment NOT VERIFIED");
@@ -128,10 +116,10 @@ public class Register
             constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
             }
         }
-                
+
     }
   }
-  
+
   public boolean checkUPC(int upc) {
       if(catalog.getWholeList().containsKey(upc)) {
           return true;
@@ -152,15 +140,22 @@ public class Register
       Item l = new Item(i.getDescription(),i.getItemID(),i.getPrice());
       return l;
   }
-  
+
   public boolean verifyPreviousPurchase(int prevOrderID, String prevDate)
   {
       return this.constantConnection.checkAgainstReceipt(prevOrderID, prevDate);
   }
 
-  public void cutConnection ()
+  public void cutConnection()
   {
     this.constantConnection.disconnect();
   }
 
+  public boolean addOrderToHistory(Order o) {
+      return constantConnection.addOrderToHistory(o);
+  }
+
+  public boolean addRentalToHistory(Rental r) {
+      return constantConnection.addRentalToHistory(r);
+  }
 }

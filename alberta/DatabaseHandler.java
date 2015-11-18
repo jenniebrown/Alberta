@@ -361,7 +361,7 @@ public class DatabaseHandler{
             String request = "SELECT ORDER_ID, DATE FROM store_order_history WHERE ORDER_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
             while ( rs.next() ) {
-               int testId = rs.getInt("ORDER_ID");  
+               int testId = rs.getInt("ORDER_ID");
                String testDate = rs.getString("DATE");
                System.out.print( "Order " + testId +" updated on " + testDate);
                System.out.println();
@@ -371,6 +371,76 @@ public class DatabaseHandler{
         } catch (Exception e) {
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }
+    }
+
+    public boolean addRentalToHistory(Rental r) {
+        try {
+            stmt = c.createStatement();
+            int rentID = r.getOrderID();
+            String card = r.payMe.getCardNumber();
+            String date = r.date.toString();
+            String pay = Integer.toString(r.payMe.getPaymentMethod());
+            double tot = r.getFinalTotal();
+            String vals = rentID+",'"+card+"','"+date+"',"+tot+",'"+pay+"'";
+            String sql = "INSERT INTO rental_history (RENTAL_ID,CARD_NBR,DATE,ORDER_TOTAL,PAYMENT_TYPE)"+
+                            "VALUES ("+vals+");";
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+
+            stmt = c.createStatement();
+            ArrayList<RentalLineItem> itemList= r.getRentalItems();
+            for(RentalLineItem i : itemList) {
+                int itemID = i.getItem().getItemID();
+                int q = i.getQuantity();
+                String due = i.getItem().getDueDate().toString();
+                String ins = "INSERT INTO rental_item_history (RENTAL_ID,ITEM_ID,QUANTITY,DUE_DATE"+
+                    "VALUES ("+vals+");";
+                stmt.executeUpdate(ins);
+                c.commit();
+            }
+            stmt.close();
+        } catch(Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            return false;
+        }finally {
+            return true;
+        }
+    }
+
+    public boolean addOrderToHistory(Order o) {
+        try {
+            stmt = c.createStatement();
+            int orderID = o.getOrderID();
+            String card = o.payMe.getCardNumber();
+            String date = o.date.toString();
+            String pay = Integer.toString(o.payMe.getPaymentMethod());
+            double tot = o.getFinalTotal();
+            String vals = orderID+",'"+card+"','"+date+"','"+pay+"'";
+            String sql = "INSERT INTO order_history (ORDER_ID,CARD_NBR,DATE,ORDER_TOTAL,PAYMENT_TYPE)"+
+                            "VALUES ("+vals+");";
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+
+            stmt = c.createStatement();
+            ArrayList<AbstractLineItem> itemList= o.getItems();
+            for(AbstractLineItem i : itemList) {
+                int itemID = i.getItem().getItemID();
+                int q = i.getQuantity();
+                vals = orderID+","+itemID+","+q;
+                String ins = "INSERT INTO order_item_history (ORDER_ID,ITEM_ID,QUANTITY)"+
+                    "VALUES ("+vals+");";
+                stmt.executeUpdate(ins);
+                c.commit();
+            }
+            stmt.close();
+        } catch(Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            return false;
+        } finally {
+            return true;
         }
     }
 
@@ -436,7 +506,7 @@ public class DatabaseHandler{
             System.exit(0);
         }
     }
-    
+
     /**
      * Get all Employees as ArrayList of String
      */

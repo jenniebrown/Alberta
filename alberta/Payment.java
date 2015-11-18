@@ -20,6 +20,9 @@ public class Payment {
         this.cardNumber = null;
         this.paymentMethod = 1;
     }
+
+    public int getPaymentMethod() {return paymentMethod;}
+
     public double getAmount() {
         return amountTendered;
     }
