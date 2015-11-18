@@ -40,7 +40,7 @@ public class UserInterface {
         return userType;
     }
 
-    public static int getInt() { //method so we can get an int when needed
+    protected static int getInt() { //method so we can get an int when needed
         while (!scan.hasNextInt()) {
             System.out.println("Enter a whole number");
 
