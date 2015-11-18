@@ -45,12 +45,13 @@ public class UserInterface {
         boolean finish = false;
         do {
             if(userType == 1) {
-                System.out.print("Select desired operation.\nEnter '1' for Process Sale, '2' for Process Rental, '3' for Return, '4' to Add/Manage Users, any key to logout");
+                System.out.print("Select desired operation.\nEnter '1' for Process Sale, '2' for Process Rental, '3' for Return, '4' to Add/Manage Users, any key to logout: ");
             } else if(userType == 2) {
-                System.out.print("Select desired operation.\nEnter '1' for Process Sale, '2' for Process Rental, '3' for Return, any key to logout");
+                System.out.print("Select desired operation.\nEnter '1' for Process Sale, '2' for Process Rental, '3' for Return, any key to logout: ");
             }
 
             String op = scan.next();
+            System.out.println ("Testing Case and exit from cases: " + op);
             switch(op) {
                 case "1":
                     //process sale

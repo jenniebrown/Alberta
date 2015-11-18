@@ -67,5 +67,6 @@ public class ReturnFacade {
         {
             reg.updateInventory(returning);
         }
+        //ADD RETURN TO HISTORY!!!
     }
 }
