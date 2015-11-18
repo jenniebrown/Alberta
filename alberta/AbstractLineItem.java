@@ -2,7 +2,7 @@ package alberta;
 
 public abstract class AbstractLineItem
 {
-    private AbstractItem item;
+    protected AbstractItem item;
     private int quantity;
     private double subtotal;
 

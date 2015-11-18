@@ -1,6 +1,7 @@
 package alberta;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 // -------------------------------------------------------------------------
@@ -15,6 +16,7 @@ public class Register
 {
   private ProductCatalog catalog;
   private AbstractSale currentSale;
+  private Rental currentRental;
   private ArrayList<AbstractSale> salesOfTheDay;
   private double profitMade;
   private Payment localPayment;
@@ -29,7 +31,8 @@ public class Register
     this.salesOfTheDay = new ArrayList <AbstractSale>();
     this.profitMade = 0.0;
     //this.localPayment = null;
-    this.oIDGen = new Random();
+    Date seed = new Date();
+    this.oIDGen = new Random(seed.getTime());
     this.constantConnection = DatabaseHandler.connect();
   }
 
@@ -39,8 +42,13 @@ public class Register
       this.currentSale = current;
   }
 
+  public void setCurrentRental(Rental current) {
+      this.currentRental = current;
+  }
+
   public AbstractSale getCurrentSale() {return currentSale;}
 
+  public Rental getCurrentRental() {return currentRental;}
 //--------------------------------Methods-------------------------------------//
   public Order createNewOrder()
   {
@@ -54,7 +62,7 @@ public class Register
       currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
       return (Rental)currentSale;
   }
-  
+
   public Return createNewReturn(int originalOrderID, String originalDate) {
       currentSale = new Return(originalDate, originalOrderID);
       currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
@@ -64,23 +72,11 @@ public class Register
   public void addSale() {
       salesOfTheDay.add(currentSale);
   }
-//Is this even used? 
+//Is this even used?
   public void endSale()
   {
     currentSale.completeTransaction();
   }
-
-//  public boolean enterItem(int id, int quantity)
-//  {
-//    AbstractItem item = catalog.getItem(id);
-//    if (item == null) {
-//        return false;
-//    } else {
-//        currentSale.addItem(item, quantity);
-//        //System.out.println("Entered Item. Current Sale = "+currentSale);
-//        return true;
-//    }
-//  }
 
   public boolean makePayment(String cardNumber, double amount)
   {
@@ -100,9 +96,9 @@ public class Register
         localPayment = p;
         //TO-DO: ADD order to database history
         //TO-DO: Add customer info to database, can only do this if cardnumber exists
-        
-       
-        
+
+
+
         return true;
     } else {
     	System.out.println("localPayment NOT VERIFIED");
@@ -128,10 +124,10 @@ public class Register
             constantConnection.updateQuantity(x.getItem().getItemID(),quantityChange);
             }
         }
-                
+
     }
   }
-  
+
   public boolean checkUPC(int upc) {
       if(catalog.getWholeList().containsKey(upc)) {
           return true;
@@ -152,15 +148,30 @@ public class Register
       Item l = new Item(i.getDescription(),i.getItemID(),i.getPrice());
       return l;
   }
-  
-  public boolean verifyPreviousPurchase(int prevOrderID, String prevDate)
+
+  public boolean verifyPreviousPurchase(int prevOrderID,Return ret)
   {
-      return this.constantConnection.checkAgainstReceipt(prevOrderID, prevDate);
+      String tableName;
+      switch(ret.getRentalOrSale()) {
+          case 0:
+              tableName = "rental_history";
+          default:
+              tableName = "order_history";
+      }
+
+      return this.constantConnection.checkAgainstReceipt(prevOrderID,tableName);
   }
 
-  public void cutConnection ()
+  public void cutConnection()
   {
     this.constantConnection.disconnect();
   }
 
+  public boolean addOrderToHistory(Order o) {
+      return constantConnection.addOrderToHistory(o);
+  }
+
+  public boolean addRentalToHistory(Rental r) {
+      return constantConnection.addRentalToHistory(r);
+  }
 }
