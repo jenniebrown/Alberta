@@ -156,7 +156,7 @@ public class DatabaseHandler{
             while ( rs.next() ) {
                 int id = rs.getInt("ITEM_ID");
                 String  name = rs.getString("NAME");
-                double price  = rs.getDouble("PRICE");
+                double price  = rs.getDouble("PURCHASE_PRICE");
                 String  desc = rs.getString("DESCRIPTION");
                 int quant = rs.getInt("QUANTITY");
                 result[loopCount++] = ""+id+","+name+","+price+","+desc+","+quant;
@@ -249,7 +249,7 @@ public class DatabaseHandler{
     }
     public boolean checkAgainstReceipt(int orderID, String date){
         try {
-            String request = "SELECT ORDER_ID, DATE FROM store_order_history WHERE ORDER_ID = "
+            String request = "SELECT ORDER_ID, DATE FROM order_history WHERE ORDER_ID = "
                     +orderID+" AND DATE = "+date+";";
             rs = stmt.executeQuery(request);
             while (rs.next()) {
@@ -328,17 +328,17 @@ public class DatabaseHandler{
         }
     }
 
-    /**
-     * Overloaded method to add order to store_order_history with no cardNumber
-     * @param date
-     * @param orderTotal
-     * @param paymentType
-     * @param custID
-     * @param id
-     */
-    public void addOrderToHistory(int id, String date, double orderTotal, String paymentType, String custID) {
-        addOrderToHistory(id,date,orderTotal,paymentType,"",custID);
-    }
+//    /**
+//     * Overloaded method to add order to store_order_history with no cardNumber
+//     * @param date
+//     * @param orderTotal
+//     * @param paymentType
+//     * @param custID
+//     * @param id
+//     */
+//    public void addOrderToHistory(int id, String date, double orderTotal, String paymentType, String custID) {
+//        addOrderToHistory(id,date,orderTotal,paymentType,"",custID);
+//    }
 
     /**
      * Add order to store_order_history
@@ -353,12 +353,12 @@ public class DatabaseHandler{
         try {
             stmt = c.createStatement();
             String vals = id+",'"+date+"',"+orderTotal+",'"+paymentType+"','"+card+"','"+custID+"'";
-            String sql = "INSERT INTO store_order_history (ORDER_ID,DATE,ORDER_TOTAL,PAYMENT_TYPE,CARD_NUMBER,CUSTOMER_ID) "+
+            String sql = "INSERT INTO order_history (ORDER_ID,DATE,ORDER_TOTAL,PAYMENT_TYPE,CARD_NUMBER,CUSTOMER_ID) "+
                             "VALUES ("+vals+");";
             stmt.executeUpdate(sql);
             c.commit();
 
-            String request = "SELECT ORDER_ID, DATE FROM store_order_history WHERE ORDER_ID = "+id+";" ;
+            String request = "SELECT ORDER_ID, DATE FROM order_history WHERE ORDER_ID = "+id+";" ;
             rs = stmt.executeQuery(request);
             while ( rs.next() ) {
                int testId = rs.getInt("ORDER_ID");
@@ -417,7 +417,7 @@ public class DatabaseHandler{
             String date = o.date.toString();
             String pay = Integer.toString(o.payMe.getPaymentMethod());
             double tot = o.getFinalTotal();
-            String vals = orderID+",'"+card+"','"+date+"','"+pay+"'";
+            String vals = orderID+",'"+card+"','"+date+"',"+tot+",'"+pay+"'";
             String sql = "INSERT INTO order_history (ORDER_ID,CARD_NBR,DATE,ORDER_TOTAL,PAYMENT_TYPE)"+
                             "VALUES ("+vals+");";
             stmt.executeUpdate(sql);
@@ -426,9 +426,9 @@ public class DatabaseHandler{
 
             stmt = c.createStatement();
             ArrayList<AbstractLineItem> itemList= o.getItems();
-            for(AbstractLineItem i : itemList) {
-                int itemID = i.getItem().getItemID();
-                int q = i.getQuantity();
+            for(int i=0; i < itemList.size(); i++) {
+                int itemID = itemList.get(i).getItem().getItemID();
+                int q = itemList.get(i).getQuantity();
                 vals = orderID+","+itemID+","+q;
                 String ins = "INSERT INTO order_item_history (ORDER_ID,ITEM_ID,QUANTITY)"+
                     "VALUES ("+vals+");";

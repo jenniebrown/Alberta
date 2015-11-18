@@ -1,6 +1,7 @@
 package alberta;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 // -------------------------------------------------------------------------
@@ -29,7 +30,8 @@ public class Register
     this.salesOfTheDay = new ArrayList <AbstractSale>();
     this.profitMade = 0.0;
     //this.localPayment = null;
-    this.oIDGen = new Random();
+    Date seed = new Date();
+    this.oIDGen = new Random(seed.getTime());
     this.constantConnection = DatabaseHandler.connect();
   }
 
