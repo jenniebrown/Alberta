@@ -80,9 +80,9 @@ public class UserInterface {
                            }
                            System.out.print("Enter quantity: ");
                            int q = getInt();
-                           while(q < 0) { // could change this to 1 because logically the sale shouldn't go through if they did not buy it
+                           while(q < 1) { // could change this to 1 because logically the sale shouldn't go through if they did not buy it
                                System.out.println("Invalid quantity: Try again: ");
-                               q = scan.nextInt();
+                               q = getInt();
                            }
                            //add item to rental
                            of.enterOrderItem(upc, q);
