@@ -41,13 +41,12 @@ public class UserInterface {
     }
 
     public static int getInt() { //method so we can get an int when needed
-        Scanner sc = new Scanner(System.in);
-        while (!sc.hasNextInt()) {
+        while (!scan.hasNextInt()) {
             System.out.println("Enter a whole number");
 
-            sc.next();
+            scan.next();
         }
-        return sc.nextInt();
+        return scan.nextInt();
     }
 
     public static void main(String[] args) {
