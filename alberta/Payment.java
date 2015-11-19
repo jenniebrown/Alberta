@@ -10,10 +10,10 @@ public class Payment {
     private String cardNumber;
 
     public Payment(String cardNumber, double amount) {
-    	Scanner scan = new Scanner(System.in);
         this.credit = true;
         this.amountTendered = amount;
         while (!verifyCredit(cardNumber)) {
+        	Scanner scan = new Scanner(System.in);
         	System.out.println("Enter valid credit card number: ");
         	cardNumber = scan.next();
         }
