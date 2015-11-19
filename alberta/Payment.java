@@ -1,5 +1,7 @@
 package alberta;
 
+import java.util.Scanner;
+
 public class Payment {
 
     private double amountTendered;
@@ -8,8 +10,13 @@ public class Payment {
     private String cardNumber;
 
     public Payment(String cardNumber, double amount) {
+    	Scanner scan = new Scanner(System.in);
         this.credit = true;
         this.amountTendered = amount;
+        while (!verifyCredit(cardNumber)) {
+        	System.out.println("Enter valid credit card number: ");
+        	cardNumber = scan.next();
+        }
         this.cardNumber = cardNumber;
         this.paymentMethod = 2;
     }
@@ -30,9 +37,9 @@ public class Payment {
     public boolean isCredit() {return credit;}
 
     public void setCardNumber(String num) {
-        if(verifyCredit(num)) {
-            this.cardNumber = num;
-        }
+       if(verifyCredit(num)) {
+          this.cardNumber = num;
+       }
     }
 
     public String getCardNumber() {return this.cardNumber;}
