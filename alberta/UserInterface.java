@@ -60,7 +60,7 @@ public class UserInterface {
             }
 
             String op = scan.next();
-            System.out.println ("Testing Case and exit from cases: " + op);
+      //      System.out.println ("Testing Case and exit from cases: " + op);
             switch(op) {
 //------------------------------ProcessSale-----------------------------------//
                 case "1":
@@ -103,10 +103,14 @@ public class UserInterface {
                         boolean complete;
                         switch(paymentMethod) {
                             case 1:
-                                System.out.print("Enter amount tendered: ");
+                               // System.out.print("Enter amount tendered: ");
                                 double amt;
                                 //finish cash payment. create change yada yada
                                 do {
+                                	while (!scan.hasNextDouble()) {
+                                		System.out.print("INVALID. Enter amount tendered: ");
+                                		scan.next();
+                                	}
                                     amt = scan.nextDouble();
                                     complete = of.createCashPayment(amt);
                                     if(!complete) {
