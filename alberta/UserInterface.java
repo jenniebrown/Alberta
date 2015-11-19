@@ -203,7 +203,7 @@ public class UserInterface {
                     break;
 //-----------------------------------Return-----------------------------------//
                 case "3":
-                    try {
+//                    try {
                         System.out.println ("Begin Return Process. Please have receipt ready");
                         ReturnFacade returnFac = new ReturnFacade(reg);
                         //Process Return
@@ -283,11 +283,11 @@ public class UserInterface {
                         //}
 //                        else
 //                            System.out.println("Incorrect order ID. Ending Return Transaction");
-                    } catch (InputMismatchException i)
+                   /* } catch (InputMismatchException i)
                     {
                         System.out.println("Input not allowed, ending return transaction");
                         break;
-                    }
+                    }*/
                     break;
 //------------------------------------UserManagement--------------------------//
                 case "4":
