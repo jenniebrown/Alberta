@@ -63,9 +63,9 @@ public class Register
       return (Rental)currentSale;
   }
 
-  public Return createNewReturn(int originalOrderID, String originalDate) {
-      currentSale = new Return(originalDate, originalOrderID);
-      currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID to random number */
+  public Return createNewReturn(int originalOrderID) {
+      currentSale = new Return(originalOrderID);
+      currentSale.setOrderID(oIDGen.nextInt(MAX_INT)); /* Sets orderID of return to random number */
       return (Return)currentSale;
   }
 
@@ -136,7 +136,34 @@ public class Register
           return false;
       }
   }
+ 
+  public AbstractLineItem checkItemHistory(int upc, Return ret)
+  {
+      String tableName = null;
+      //System.out.println(ret.getRentalOrSale());
 
+      switch (ret.getRentalOrSale()){
+          case 0:
+              tableName = "rental";
+              int quantity = this.constantConnection.retrieveItemHistoryQuantity(upc, tableName, ret);
+              if (quantity == 0){
+                  System.out.println("Item not found in rental history. ");
+                  return null;
+              }
+              else
+                  return new RentalLineItem((RentalItem)this.getRentalItemFromCatalog(upc),quantity);
+          default:
+              tableName = "order";
+              quantity = this.constantConnection.retrieveItemHistoryQuantity(upc, tableName, ret);
+              if (quantity == 0){
+                  System.out.println("Item not found in order history. ");
+                  return null;
+              }
+              else
+                  return new SalesLineItem((Item)this.getSaleItemFromCatalog(upc),quantity);
+      }  
+  }
+          
   public AbstractItem getRentalItemFromCatalog(int upc) {
       AbstractItem i = catalog.getItem(upc);
       RentalItem r = new RentalItem(i.getDescription(),i.getItemID(),i.getPrice(),i.getRentalType());
@@ -155,6 +182,7 @@ public class Register
       switch(ret.getRentalOrSale()) {
           case 0:
               tableName = "rental_history";
+              break;
           default:
               tableName = "order_history";
       }

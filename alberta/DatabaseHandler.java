@@ -247,13 +247,46 @@ public class DatabaseHandler{
         }
         return result;
     }
+    //This is horrible design, but I can't think of another way to retrieve everything at once.
+    /*public ArrayList getItemInfoByIDList(int itemID) {
+        ArrayList result = new ArrayList<>();
+        try {
+            stmt = c.createStatement();
+            String request = "SELECT * FROM product_catalog WHERE ITEM_ID = "+itemID;
+            rs = stmt.executeQuery(request);
+
+            int id = rs.getInt("ITEM_ID");
+            String  name = rs.getString("NAME");
+            double price  = rs.getDouble("PRICE");
+            String  desc = rs.getString("DESCRIPTION");
+            result.add(id); result.add(name); result.add(price); result.add(desc);
+            //0 has id, 1 has name, 2 has price, 3 has description.
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return result;
+    }*/
     public boolean checkAgainstReceipt(int orderID,String tableName){
         try {
+            stmt = c.createStatement();
             String request = "SELECT ORDER_ID,DATE FROM "+tableName+" WHERE ORDER_ID = "
                     +orderID+";";
+            if (tableName.equals("rental_history"))
+            {
+                request = "SELECT RENTAL_ID,DATE FROM "+tableName+" WHERE RENTAL_ID = "
+                    +orderID+";";
+            }
             rs = stmt.executeQuery(request);
             while (rs.next()) {
-                int testID = rs.getInt("ORDER_ID");
+                
+                int testID = 0;
+                if(tableName.equals("rental_history"))
+                    testID = rs.getInt("RENTAL_ID");
+                else
+                    testID = rs.getInt("ORDER_ID");
                 String testDate = rs.getString("DATE");
                 //String custID = rs.getString("CUST_ID");
                 System.out.println("Order number " +testID+", made on "+testDate);
@@ -265,6 +298,58 @@ public class DatabaseHandler{
             System.exit(0);
         }
         return false;
+    }
+    //Item history only has order_id, item_id and quantity for Order, while Rental
+    //has all of that (order_id is rental_id) along with due date and return date. Since
+    //this isn't enough to create AbstractLineItem (Or items for that matter), I will retrieve
+    //Quantity and then use a modified getItemInfoByID(List) method to fill in the rest.
+    //0 has id, 1 has name, 2 has price, 3 has description. 
+    //Originally returning abstractLineItem, it will be built through the register instead. This
+    //confirms if the item exists, and what it's quantity was. If quantity remains 0, that means 
+    //the item doesn't exist in history. Will check for it in register.
+    public int retrieveItemHistoryQuantity(int upc, String tableName, Return ret)
+    {
+        int quantity = 0;
+        try{
+            stmt = c.createStatement();
+            switch (tableName) {
+                case "order":
+                    //SalesLineItem ali = null;
+                    String request = "SELECT QUANTITY FROM "+tableName+"_item_history WHERE ORDER_ID = "
+                            +ret.getOriginalOrderID()+ " AND ITEM_ID = "+upc+";";
+                    rs = stmt.executeQuery(request);
+                    while(rs.next())
+                    {
+                        quantity = rs.getInt("QUANTITY");
+                        /*ArrayList itemInfo = this.getItemInfoByIDList(upc);
+                        //This is really gross. Only way
+                        Item ai = new Item((String)itemInfo.get(1),
+                                (int)itemInfo.get(0),(double)itemInfo.get(2));
+                        ali = new SalesLineItem(ai,quantity);*/
+                    }
+                break;
+                case "rental":
+                    RentalLineItem rli = null;
+                    request = "SELECT QUANTITY FROM "+tableName+"_item_history WHERE RENTAL_ID = "
+                            +ret.getOriginalOrderID()+ " AND ITEM_ID = "+upc+";";
+                    rs = stmt.executeQuery(request);
+                    while(rs.next())
+                    {
+                        quantity = rs.getInt("QUANTITY");
+                       /* ArrayList itemInfo = this.getItemInfoByIDList(upc);
+                        //This is really gross. Only way
+                        Item ai = new Item((String)itemInfo.get(1),
+                                (int)itemInfo.get(0),(double)itemInfo.get(2));
+                        rli = new RentalLineItem(ai,quantity);*/
+                    }
+                default: 
+                    break;
+            }
+        }catch (Exception e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return quantity;
     }
 
 //----------------------------------------------------------------------------//

@@ -1,21 +1,18 @@
 package alberta;
 public class Return extends AbstractSale
 {
-    private String originalDateOfPurchase;
     private int originalOrderID;
     private int rentalOrSale; //If 0 rental, 1 defective return, 2 regularSale return
   
   /* Constructor */
-  public Return (String originalDOP, int originalOID)
+  public Return (int originalOID)
   {
     super();
-    this.originalDateOfPurchase = originalDOP;
     this.originalOrderID = originalOID;
-    this.rentalOrSale = 0;
   }
   
-  public String getOrignalDateOfPurchase() {return this.originalDateOfPurchase;}
   public int getOriginalOrderID () {return this.originalOrderID;}
+  public void setOriginalOrderID (int originalOID) {this.originalOrderID = originalOID;}
   public void setRentalOrSale (int choice) {this.rentalOrSale = choice;}
   public int getRentalOrSale () {return this.rentalOrSale;}
   
@@ -54,7 +51,7 @@ public class Return extends AbstractSale
   {
         //can add print statement for company name address and phone number
         System.out.println("Order ID For Return: " + orderID);
-        System.out.println("Original purchase Order ID" + originalOrderID);
+        System.out.println("Original purchase Order ID " + originalOrderID);
         System.out.println("Return Receipt");
         System.out.println("---------------------------------------------------");
         System.out.println("\t\tCompany Name");
@@ -62,7 +59,7 @@ public class Return extends AbstractSale
         System.out.println("\t\tCompany Number");
         System.out.println("---------------------------------------------------");
         System.out.println("Date of Return: " + date);
-        System.out.println("Original date of purchase: " + originalDateOfPurchase);
+       // System.out.println("Original date of purchase: " + originalDateOfPurchase);
         System.out.println();
         System.out.println();
         System.out.println();

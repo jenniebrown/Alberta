@@ -204,11 +204,12 @@ public class UserInterface {
 //-----------------------------------Return-----------------------------------//
                 case "3":
 //                    try {
+                        int findOrderAttempts = 0;
                         System.out.println ("Begin Return Process. Please have receipt ready");
                         ReturnFacade returnFac = new ReturnFacade(reg);
                         //Process Return
                         System.out.println ("If returning a rental, press 0. If "
-                            + "returning a defective order, press 1. If returning"
+                            + "returning a defective order, press 1. If returning "
                             + "an unwanted order, press 2.");
                         int retType = getInt();
                         System.out.println("Please enter the orderID number from your receipt:");
@@ -217,9 +218,21 @@ public class UserInterface {
                         returnFac.setROrderID(oID);
                         returnFac.createReturn();
                         returnFac.setReturnType(retType);
-                        repeat = reg.verifyPreviousPurchase(oID,returnFac.getReturn());
+                        //This loop will not allow a person to continue return unless the order existed
+                        while (!(repeat = reg.verifyPreviousPurchase(oID,returnFac.getReturn())))
+                        {
+                            System.out.println("Could not verify purchase. Please try again");
+                            if (findOrderAttempts == 2)
+                            {
+                                System.out.println("Too many attempts to find order in history. Ending transaction");
+                                break; //Will end the switch
+                            }
+                            returnFac.setROrderID(getInt());
+                            returnFac.createReturn(); //The previous return type and new returnOrderID is use.
+                            findOrderAttempts++;
+                        }
 
-
+                        //Keep an eye out. Is repeat now false because of the while loop? It shouldn't be.
                         while(repeat) {
                             System.out.print("Enter product upc of item on receipt"
                                 + ", or any non-number key to complete transaction: ");
@@ -227,17 +240,17 @@ public class UserInterface {
                                 scan.next();
                                 repeat = false;
                             } else {
-                                int upc = scan.nextInt();
+                                int upc = getInt();
                                 //check if valid upc
-                                while(!returnFac.checkUPC(upc)) {
-                                    System.out.print("Invalid UPC. Try again: ");
-                                    upc = scan.nextInt();
+                                while(returnFac.checkUPCAgainstHistory(upc)) { //NEW METHOD NEEDED FOR ITEM RETURN CORRECTNESS
+                                    System.out.print("Invalid UPC. Try again: "); 
+                                    upc = getInt();
                                 }
-                                System.out.print("Enter quantity: ");
-                                int q = scan.nextInt();
-                                while(q < 0) {
-                                    System.out.println("Invalid quantity: Try again: ");
-                                    q = scan.nextInt();
+                                System.out.print("Enter quantity: "); //NEW METHOD NEEDED FOR QUANTITY RETURN CORRECTNESS
+                                int q = getInt();
+                                while(!returnFac.checkQuantity(q) || q < 1) {
+                                    System.out.println("Invalid quantity: Try again: "); 
+                                    q = getInt();
                                 }
                                 //add item to return
                                 returnFac.enterOrderItem(upc, q);

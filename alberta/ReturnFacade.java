@@ -13,20 +13,19 @@ public class ReturnFacade {
     private Return returning;
     private Register reg;
     private int originalReturnOrderID;
-    private String originalOrderDate;
+    private int returnType;
+    private AbstractLineItem check;
     public ReturnFacade (Register reg)
     {
         this.reg = reg;
     }
     public void setROrderID (int rOID) {this.originalReturnOrderID = rOID;}
 
-    public void setDate (String date) {this.originalOrderDate = date;}
+    public void setReturnType (int choice){returning.setRentalOrSale(choice);}
 
     public int getReturnOrderID(){return originalReturnOrderID;}
 
     public Return getReturn() {return returning;}
-
-    public String getOrderDate() {return originalOrderDate;}
 
     public void enterReturn (Return r)
     {
@@ -40,8 +39,14 @@ public class ReturnFacade {
         returning.addItem(r,quantity);
     }
 
-    public boolean checkUPC(int upc) {
-        return reg.checkUPC(upc);
+    public boolean checkUPCAgainstHistory(int upc) {
+        check = reg.checkItemHistory(upc,returning);
+        return (check == null);
+    }
+    
+    public boolean checkQuantity(int compare) {
+        int originalQuantity = check.getQuantity();
+        return (compare <= originalQuantity);
     }
 
     public void completeTransaction() {
@@ -53,13 +58,11 @@ public class ReturnFacade {
         returning.printReceipt();
     }
 
-    public void setReturnType (int choice){returning.setRentalOrSale(choice);}
-
     public void createReturn() //Note, cannot process a return that contains both
                                 //a rental and an order/regular sale
     {
         System.out.println("Original purchase verified");
-        Return test = reg.createNewReturn(originalReturnOrderID, originalOrderDate);
+        Return test = reg.createNewReturn(originalReturnOrderID);
         this.enterReturn(test);
     }
 
