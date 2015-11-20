@@ -312,7 +312,6 @@ public class UserInterface {
                         System.out.print("ID: ");
                         int id = getInt();
                         reg.constantConnection.removeEmployee(id);
-                        System.out.println(); //prints new line
                     } else if (val.equals("view")) {
                         for (String[] data : reg.constantConnection.getEmployees()) {
                             System.out.println("-------------------------------");
