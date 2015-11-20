@@ -169,13 +169,10 @@ public class UserInterface {
                                upc = getInt();
                            }
                            System.out.print("Enter quantity: ");
-<<<<<<< HEAD
-                           int q = scan.nextInt();
-                           while(q<=0) {
-=======
+
+
                            int q = getInt();
                            while(q < 0) {
->>>>>>> 5044f67db3039b8833ae1b3cbd40633e03fa8e50
                                System.out.println("Invalid quantity: Try again: ");
                                q = getInt();
                            }
@@ -347,12 +344,7 @@ public class UserInterface {
                         System.out.print("Password: ");
                         String pass = scan.next();
                         System.out.print("User type (int): ");
-<<<<<<< HEAD
-                        int utype = scan.nextInt();
-                        System.out.println();
-=======
                         int utype = getInt();
->>>>>>> 5044f67db3039b8833ae1b3cbd40633e03fa8e50
 
                         reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
                     }
