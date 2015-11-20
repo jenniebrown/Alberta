@@ -99,7 +99,7 @@ public class UserInterface {
                     int paymentMethod;
                     do {
                         System.out.print("Enter payment method: Press 1 for cash or 2 for credit");
-                        paymentMethod = scan.nextInt();
+                        paymentMethod = getInt();
                         boolean complete;
                         switch(paymentMethod) {
                             case 1:
@@ -155,17 +155,17 @@ public class UserInterface {
                            scan.next();
                            repeat = false;
                        } else {
-                           int upc = scan.nextInt();
+                           int upc = getInt();
                            //check if valid upc
                            while(!rf.checkUPC(upc)) {
                                System.out.print("Invalid UPC. Try again: ");
-                               upc = scan.nextInt();
+                               upc = getInt();
                            }
                            System.out.print("Enter quantity: ");
-                           int q = scan.nextInt();
+                           int q = getInt();
                            while(q < 0) {
                                System.out.println("Invalid quantity: Try again: ");
-                               q = scan.nextInt();
+                               q = getInt();
                            }
                            //add item to rental
                            rf.enterRentalItem(upc, q);
@@ -178,7 +178,7 @@ public class UserInterface {
                     //take care of payment by choosing payment method
                     do {
                         System.out.print("Enter payment method: Press 2 for credit");
-                        paymentMethod = scan.nextInt();
+                        paymentMethod = getInt();
                         boolean complete;
                         switch(paymentMethod) {
                             case 2:
@@ -264,7 +264,7 @@ public class UserInterface {
 //                            System.out.println ("If returning a rental, press 0. If "
 //                                    + "returning a defective order, press 1. If returning"
 //                                    + "an unwanted order, press 2.");
-//                            returnFac.setReturnType(scan.nextInt());
+//                            returnFac.setReturnType(getInt());
 //                            repeat = true;
                     //add items to return
 //                    do {
@@ -274,17 +274,17 @@ public class UserInterface {
 //                           scan.next();
 //                           repeat = false;
 //                       } else {
-//                           int upc = scan.nextInt();
+//                           int upc = getInt();
 //                           //check if valid upc
 //                           while(!returnFac.checkUPC(upc)) {
 //                               System.out.print("Invalid UPC. Try again: ");
-//                               upc = scan.nextInt();
+//                               upc = getInt();
 //                           }
 //                           System.out.print("Enter quantity: ");
-//                           int q = scan.nextInt();
+//                           int q = getInt();
 //                           while(q < 0) {
 //                               System.out.println("Invalid quantity: Try again: ");
-//                               q = scan.nextInt();
+//                               q = getInt();
 //                           }
 //                           //add item to rental
 //                           returnFac.enterOrderItem(upc, q);
