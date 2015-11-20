@@ -310,8 +310,7 @@ public class UserInterface {
                     String val = scan.next().toLowerCase();
                     if (val.equals("delete")) {
                         System.out.print("ID: ");
-                        int id = scan.nextInt();
-                        System.out.println(); //prints new line
+                        int id = getInt();
                         reg.constantConnection.removeEmployee(id);
                     } else if (val.equals("view")) {
                         for (String[] data : reg.constantConnection.getEmployees()) {
@@ -326,11 +325,11 @@ public class UserInterface {
                         System.out.print("Email: ");
                         String email = scan.next();
                         System.out.print("ID: ");
-                        int id = scan.nextInt();
+                        int id = getInt();
                         System.out.print("Password: ");
                         String pass = scan.next();
                         System.out.print("User type (int): ");
-                        int utype = scan.nextInt();
+                        int utype = getInt();
 
                         reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
                     }
