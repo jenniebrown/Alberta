@@ -106,7 +106,7 @@ public class UserInterface {
                     int paymentMethod;
                     do {
                         System.out.print("Enter payment method: Press 1 for cash or 2 for credit");
-                        paymentMethod = scan.nextInt();
+                        paymentMethod = getInt();
                         boolean complete;
                         switch(paymentMethod) {
                             case 1:
@@ -162,15 +162,20 @@ public class UserInterface {
                            scan.next();
                            repeat = false;
                        } else {
-                           int upc = scan.nextInt();
+                           int upc = getInt();
                            //check if valid upc
                            while(!rf.checkUPC(upc)) {
                                System.out.print("Invalid UPC. Try again: ");
-                               upc = scan.nextInt();
+                               upc = getInt();
                            }
                            System.out.print("Enter quantity: ");
+<<<<<<< HEAD
                            int q = scan.nextInt();
                            while(q<=0) {
+=======
+                           int q = getInt();
+                           while(q < 0) {
+>>>>>>> 5044f67db3039b8833ae1b3cbd40633e03fa8e50
                                System.out.println("Invalid quantity: Try again: ");
                                q = getInt();
                            }
@@ -190,7 +195,7 @@ public class UserInterface {
                     //take care of payment by choosing payment method
                     do {
                         System.out.print("Enter payment method: Press 2 for credit");
-                        paymentMethod = scan.nextInt();
+                        paymentMethod = getInt();
                         boolean complete;
                         switch(paymentMethod) {
                             case 2:
@@ -276,7 +281,7 @@ public class UserInterface {
 //                            System.out.println ("If returning a rental, press 0. If "
 //                                    + "returning a defective order, press 1. If returning"
 //                                    + "an unwanted order, press 2.");
-//                            returnFac.setReturnType(scan.nextInt());
+//                            returnFac.setReturnType(getInt());
 //                            repeat = true;
                     //add items to return
 //                    do {
@@ -286,17 +291,17 @@ public class UserInterface {
 //                           scan.next();
 //                           repeat = false;
 //                       } else {
-//                           int upc = scan.nextInt();
+//                           int upc = getInt();
 //                           //check if valid upc
 //                           while(!returnFac.checkUPC(upc)) {
 //                               System.out.print("Invalid UPC. Try again: ");
-//                               upc = scan.nextInt();
+//                               upc = getInt();
 //                           }
 //                           System.out.print("Enter quantity: ");
-//                           int q = scan.nextInt();
+//                           int q = getInt();
 //                           while(q < 0) {
 //                               System.out.println("Invalid quantity: Try again: ");
-//                               q = scan.nextInt();
+//                               q = getInt();
 //                           }
 //                           //add item to rental
 //                           returnFac.enterOrderItem(upc, q);
@@ -322,9 +327,9 @@ public class UserInterface {
                     String val = scan.next().toLowerCase();
                     if (val.equals("delete")) {
                         System.out.print("ID: ");
-                        int id = scan.nextInt();
-                        System.out.println(); //prints new line
+                        int id = getInt();
                         reg.constantConnection.removeEmployee(id);
+                        System.out.println(); //prints new line
                     } else if (val.equals("view")) {
                         for (String[] data : reg.constantConnection.getEmployees()) {
                             System.out.println("-------------------------------");
@@ -338,12 +343,16 @@ public class UserInterface {
                         System.out.print("Email: ");
                         String email = scan.next();
                         System.out.print("ID: ");
-                        int id = scan.nextInt();
+                        int id = getInt();
                         System.out.print("Password: ");
                         String pass = scan.next();
                         System.out.print("User type (int): ");
+<<<<<<< HEAD
                         int utype = scan.nextInt();
                         System.out.println();
+=======
+                        int utype = getInt();
+>>>>>>> 5044f67db3039b8833ae1b3cbd40633e03fa8e50
 
                         reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
                     }
