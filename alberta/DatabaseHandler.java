@@ -2,12 +2,14 @@ package alberta;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 public class DatabaseHandler{
     private static DatabaseHandler uniqueInstance;
     private Connection c;
     private Statement stmt;
     private ResultSet rs;
+    private final SimpleDateFormat SDF = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
 
     private DatabaseHandler() {
         try {
@@ -269,7 +271,9 @@ public class DatabaseHandler{
         }
         return result;
     }*/
-    public boolean checkAgainstReceipt(int orderID,String tableName){
+    
+    //also gets date or original sale/rental
+    public boolean checkAgainstReceipt(int orderID,String tableName,Return ret){
         try {
             stmt = c.createStatement();
             String request = "SELECT ORDER_ID,DATE FROM "+tableName+" WHERE ORDER_ID = "
@@ -291,8 +295,11 @@ public class DatabaseHandler{
                 //String custID = rs.getString("CUST_ID");
                 System.out.println("Order number " +testID+", made on "+testDate);
                 System.out.println();
+                ret.setOriginalDate(SDF.parse(testDate));
                 return true;
             }
+            stmt.close();  //Watch it
+            rs.close();
         }catch (Exception e) {
             System.err.println(e.getClass() + ": " + e.getMessage());
             System.exit(0);
@@ -306,7 +313,7 @@ public class DatabaseHandler{
     //0 has id, 1 has name, 2 has price, 3 has description. 
     //Originally returning abstractLineItem, it will be built through the register instead. This
     //confirms if the item exists, and what it's quantity was. If quantity remains 0, that means 
-    //the item doesn't exist in history. Will check for it in register.
+    //the item doesn't exist in history. Will check for it in register. 
     public int retrieveItemHistoryQuantity(int upc, String tableName, Return ret)
     {
         int quantity = 0;
@@ -345,6 +352,8 @@ public class DatabaseHandler{
                 default: 
                     break;
             }
+            stmt.close();
+            rs.close();  ///Watch it
         }catch (Exception e) {
             System.err.println(e.getClass() + ": " + e.getMessage());
             System.exit(0);
@@ -488,6 +497,78 @@ public class DatabaseHandler{
                 c.commit();
             }
             stmt.close();
+        } catch(Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            return false;
+        } finally {
+            return true;
+        }
+    }
+    
+    public boolean addReturnToHistory (Return rn)
+    {
+        try {
+            if(rn.getRentalOrSale() != 0)  //If it's not a rental return
+            {
+                stmt = c.createStatement();
+                int returnID = rn.getOrderID();
+                int originalOrderID = rn.getOriginalOrderID();
+                String date = rn.date.toString(); //The date of the return
+               // String card_nbr = "?????????????????"; ////HEY!!!!FIX ME!!!
+                double refund = rn.getFinalTotal();
+               // String paymentType = "?????????????";  /////FIX ME!!!
+                String vals = returnID+",'"+originalOrderID+"','"+date+/*"',"+card_nbr+*/
+                        ",'"+refund+/*","+paymentType+*/"'";
+                String sql = "INSERT INTO returns (ORDER_ID,DATE,ORDER_TOTAL)"+
+                                "VALUES ("+vals+");";
+                stmt.executeUpdate(sql);
+                c.commit();
+                stmt.close();
+
+                stmt = c.createStatement();
+                ArrayList<AbstractLineItem> itemList= rn.getItems();
+                for(int i=0; i < itemList.size(); i++) {
+                    int itemID = itemList.get(i).getItem().getItemID();
+                    int q = itemList.get(i).getQuantity();
+                    vals = returnID+","+itemID+","+q;
+                    String ins = "INSERT INTO return_items (RETURN_ID,ITEM_ID,QUANTITY)"+
+                        "VALUES ("+vals+");";
+                    stmt.executeUpdate(ins);
+                    c.commit();
+                }
+                stmt.close();
+            }
+            else //If it is a rental
+            {
+                long secsOfReturnDate = 0;
+                int hours = 0;
+                stmt = c.createStatement();
+                int rental_ID = rn.getOriginalOrderID();
+                ArrayList<AbstractLineItem> itemList= rn.getItems();
+                for(int i=0; i < itemList.size(); i++) {
+                    String returnDate = rn.date.toString();
+                    String ins = "UPDATE rental_item_history SET RETURN_DATE= " 
+                            +returnDate+ " WHERE RENTAL_ID= "+rental_ID+
+                            " AND ITEM_ID= "+itemList.get(i).getItem().getItemID()+";";
+                    stmt.executeUpdate(ins);
+                    c.commit();
+                    ins = "SELECT DUE_DATE FROM rental_item_history WHERE RENTAL_ID= "+rental_ID+
+                            " AND ITEM_ID= "+itemList.get(i).getItem().getItemID()+";";
+                    rs = stmt.executeQuery(ins);
+                    secsOfReturnDate = (SDF.parse(rs.getString("DUE_DATE")).getTime() - rn.date.getTime())/ 1000;
+                    hours += (int)(secsOfReturnDate / 3600);
+                }
+                stmt.close();
+                
+                stmt = c.createStatement();
+                double lateFee = hours*1.0;
+                rn.setLateFee(lateFee);
+                String ins = "UPDATE rental_history SET LATE_FEE= "+lateFee+" WHERE RENTAL_ID= "+rental_ID+
+                        ";";
+                stmt.executeUpdate(ins);
+                c.commit();
+                stmt.close();
+            }
         } catch(Exception e) {
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             return false;

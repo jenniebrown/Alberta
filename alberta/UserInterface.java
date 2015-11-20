@@ -242,11 +242,11 @@ public class UserInterface {
                             } else {
                                 int upc = getInt();
                                 //check if valid upc
-                                while(returnFac.checkUPCAgainstHistory(upc)) { //NEW METHOD NEEDED FOR ITEM RETURN CORRECTNESS
+                                while(returnFac.checkUPCAgainstHistory(upc)) { 
                                     System.out.print("Invalid UPC. Try again: "); 
                                     upc = getInt();
                                 }
-                                System.out.print("Enter quantity: "); //NEW METHOD NEEDED FOR QUANTITY RETURN CORRECTNESS
+                                System.out.print("Enter quantity: "); 
                                 int q = getInt();
                                 while(!returnFac.checkQuantity(q) || q < 1) {
                                     System.out.println("Invalid quantity: Try again: "); 

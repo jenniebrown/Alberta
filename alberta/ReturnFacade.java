@@ -68,10 +68,14 @@ public class ReturnFacade {
 
     public void processReturn()
     {
-        if (returning.getRentalOrSale() != 1)
+        if (returning.getRentalOrSale() != 1) //increase inventory if a rental return or non-defective
         {
             reg.updateInventory(returning);
         }
-        //ADD RETURN TO HISTORY!!!
+        reg.addReturnToHistory(returning);
+        if (returning.getRentalOrSale() != 0) //if non-rental return, give refund
+            reg.refund(returning);
+        else
+            reg.collectLateFee(returning); //Might be 0
     }
 }

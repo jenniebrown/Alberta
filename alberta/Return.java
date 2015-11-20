@@ -1,8 +1,11 @@
 package alberta;
+import java.util.Date;
 public class Return extends AbstractSale
 {
     private int originalOrderID;
+    private Date originalDate;
     private int rentalOrSale; //If 0 rental, 1 defective return, 2 regularSale return
+    private double lateFee;
   
   /* Constructor */
   public Return (int originalOID)
@@ -13,6 +16,10 @@ public class Return extends AbstractSale
   
   public int getOriginalOrderID () {return this.originalOrderID;}
   public void setOriginalOrderID (int originalOID) {this.originalOrderID = originalOID;}
+  public double getLateFee() {return this.lateFee;}
+  public void setLateFee(double lf) {this.lateFee = lf;}
+  public Date getOriginalDate () {return this.originalDate;}
+  public void setOriginalDate (Date oDate) {this.originalDate = oDate;}
   public void setRentalOrSale (int choice) {this.rentalOrSale = choice;}
   public int getRentalOrSale () {return this.rentalOrSale;}
   
@@ -43,7 +50,6 @@ public class Return extends AbstractSale
             setFinalTotal(calcTransacTot());
         else
             setFinalTotal (0.0);
-        System.out.println("Refund due: \t"+ getFinalTotal());
     }
 
   @Override
@@ -59,15 +65,18 @@ public class Return extends AbstractSale
         System.out.println("\t\tCompany Number");
         System.out.println("---------------------------------------------------");
         System.out.println("Date of Return: " + date);
-       // System.out.println("Original date of purchase: " + originalDateOfPurchase);
+        System.out.println("Original date of purchase: " + originalDate.toString());
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println("Item Description\tQuantity\tRefund");
+        System.out.println("Item Description\tQuantity\t");
         for(AbstractLineItem i : items){
-            System.out.println(i.getItem().getDescription()+ "\t("+ i.getQuantity() +"x)"+"\t\t $"+i.getSubtotal());
+            System.out.println(i.getItem().getDescription()+ "\t("+ i.getQuantity() +"x)");
         }
-        System.out.println("Refund total: " + this.getFinalTotal());
+        if (rentalOrSale != 0)
+            System.out.println("Refund total: " + this.getFinalTotal());
+        else
+            System.out.println("Late fee charged to credit card: " + this.getLateFee());
         System.out.println("Return Complete");
         System.out.println();
         System.out.println();

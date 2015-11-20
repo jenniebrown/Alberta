@@ -45,7 +45,9 @@ public class Register
   public void setCurrentRental(Rental current) {
       this.currentRental = current;
   }
-
+  public void refund (Return ret) {profitMade -= ret.getFinalTotal();}
+  public void collectLateFee (Return ret) {profitMade += ret.getLateFee();}
+  
   public AbstractSale getCurrentSale() {return currentSale;}
 
   public Rental getCurrentRental() {return currentRental;}
@@ -94,11 +96,6 @@ public class Register
         updateInventory(currentSale);
         currentSale.updatePayment(p);
         localPayment = p;
-        //TO-DO: ADD order to database history
-        //TO-DO: Add customer info to database, can only do this if cardnumber exists
-
-
-
         return true;
     } else {
     	System.out.println("localPayment NOT VERIFIED");
@@ -187,7 +184,7 @@ public class Register
               tableName = "order_history";
       }
 
-      return this.constantConnection.checkAgainstReceipt(prevOrderID,tableName);
+      return this.constantConnection.checkAgainstReceipt(prevOrderID,tableName,ret);
   }
 
   public void cutConnection()
@@ -201,5 +198,9 @@ public class Register
 
   public boolean addRentalToHistory(Rental r) {
       return constantConnection.addRentalToHistory(r);
+  }
+  
+  public boolean addReturnToHistory (Return rn) {
+      return constantConnection.addReturnToHistory(rn);
   }
 }
