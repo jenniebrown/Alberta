@@ -80,9 +80,10 @@ public class Order extends AbstractSale{
             it = items.get(i);
             r.append(it.getItem().getDescription());
             r.append("\t "+it.getQuantity());
-            r.append("\t"+it.getItem().getPrice());
-            r.append("\n\t\t\t"+it.getSubtotal());
+            r.append(String.format("\t%.2f",it.getItem().getPrice()));
+            r.append(String.format("\n\t\t\t%.2f", it.getSubtotal()));
             r.append("\n");
+
         }
         String result = r.toString();
         return result;

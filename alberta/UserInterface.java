@@ -1,6 +1,7 @@
 package alberta;
 
 import java.util.Scanner;
+import java.util.Date;
 import java.util.InputMismatchException;
 
 public class UserInterface {
@@ -83,12 +84,18 @@ public class UserInterface {
                            }
                            System.out.print("Enter quantity: ");
                            int q = getInt();
-                           while(q < 1) { // could change this to 1 because logically the sale shouldn't go through if they did not buy it
+                           while(q<=0) {
+
                                System.out.println("Invalid quantity: Try again: ");
                                q = getInt();
                            }
-                           //add item to rental
-                           of.enterOrderItem(upc, q);
+                           if(of.checkInventory(q, upc)) {
+                               of.enterOrderItem(upc, q);//add item to rental
+                           }else {
+                               System.out.println("Item not in inventory.");
+                           }
+
+
                        }
                     } while(repeat);
                     //complete transaction and display order status
@@ -163,12 +170,17 @@ public class UserInterface {
                            }
                            System.out.print("Enter quantity: ");
                            int q = scan.nextInt();
-                           while(q < 0) {
+                           while(q<=0) {
                                System.out.println("Invalid quantity: Try again: ");
-                               q = scan.nextInt();
+                               q = getInt();
                            }
-                           //add item to rental
-                           rf.enterRentalItem(upc, q);
+                           if(rf.checkInventory(q, upc)) {
+                             //add item to rental
+                               rf.enterRentalItem(upc, q);
+                           } else {
+                               System.out.println("Item not in inventory.");
+                           }
+
                        }
                     } while(repeat);
                     //complete transaction and display order status
@@ -242,14 +254,14 @@ public class UserInterface {
                             } else {
                                 int upc = getInt();
                                 //check if valid upc
-                                while(returnFac.checkUPCAgainstHistory(upc)) { 
-                                    System.out.print("Invalid UPC. Try again: "); 
+                                while(returnFac.checkUPCAgainstHistory(upc)) {
+                                    System.out.print("Invalid UPC. Try again: ");
                                     upc = getInt();
                                 }
-                                System.out.print("Enter quantity: "); 
+                                System.out.print("Enter quantity: ");
                                 int q = getInt();
                                 while(!returnFac.checkQuantity(q) || q < 1) {
-                                    System.out.println("Invalid quantity: Try again: "); 
+                                    System.out.println("Invalid quantity: Try again: ");
                                     q = getInt();
                                 }
                                 //add item to return
@@ -331,6 +343,7 @@ public class UserInterface {
                         String pass = scan.next();
                         System.out.print("User type (int): ");
                         int utype = scan.nextInt();
+                        System.out.println();
 
                         reg.constantConnection.addEmployee(fname, lname, email, id, pass, utype);
                     }
@@ -342,8 +355,13 @@ public class UserInterface {
         } while (!finish);
         //TO-DO: logout procedure
         scan.close();
-        reg.cutConnection();
         System.out.println("Logging out...");
+        System.out.printf("Total revenue: %.2f\n",reg.getRevenue());
+        Date logOut = reg.getLogoutTime();
+        System.out.println("End of day: "+logOut.toString());
+        reg.runEndOfDay(logOut);
+        reg.cutConnection();
+
         System.exit(0);
     }
 }

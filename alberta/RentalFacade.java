@@ -43,4 +43,12 @@ public class RentalFacade
     public void displayReceipt() {
         rental.printReceipt();
     }
+
+    public boolean checkInventory(int q, int id) {
+        if(q <= 0) {
+            return false;
+        } else {
+            return reg.checkInventory(q, id);
+        }
+    }
 }

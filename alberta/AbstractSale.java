@@ -40,9 +40,9 @@ public abstract class AbstractSale
     public double getFinalTotal() {return finalTotal;}
 
     public ArrayList<AbstractLineItem> getItems() {return items;}
-    
+
     public int getOrderID() {return orderID;}
-    
+
     public void setOrderID(int oID) {this.orderID = oID;}
 
     public void setRunningTotal(double newTotal) {this.runningTotal = newTotal;}
@@ -69,15 +69,15 @@ public abstract class AbstractSale
         //can add print statement for company name address and phone number
         System.out.println();
         System.out.println("Order ID: " + orderID);
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.println("\t\tCompany Name");
         System.out.println("\t\tCompany Address");
         System.out.println("\t\tCompany Number");
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.println();
         System.out.println(date.toString());
         System.out.println();
-        System.out.println("Item Description\tQuantity\tPrice");
+        System.out.println("Item Description\t\t\tQuantity\tPrice");
         for(AbstractLineItem i : items){
             System.out.println(i.getItem().getDescription()+ "\t\t("+ i.getQuantity() +"x)"+"\t\t $"+i.getSubtotal());
         }
@@ -86,10 +86,10 @@ public abstract class AbstractSale
             + ""
             + ""
             + "\t\t$"+ getBalance());
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.printf("Tax: \t\t\t\t\t$%.2f\n",getFinalTax());
         System.out.printf("Total: \t\t\t\t\t$%.2f\n",getFinalTotal());
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.printf("Amount Paid: \t\t\t\t$%.2f\n",payMe.getAmount());
 
         System.out.printf("Cash Back: \t\t\t\t$%.2f\n",(payMe.getAmount()-getFinalTotal()));

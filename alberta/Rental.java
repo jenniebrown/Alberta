@@ -58,9 +58,9 @@ public class Rental extends AbstractSale
             it = items.get(i);
             r.append(it.getItem().getDescription());
             r.append("\t "+it.getQuantity());
-            r.append("\t"+it.getItem().getPrice());
+            r.append(String.format("\t%.2f",it.getItem().getPrice()));
             r.append("\t"+((RentalItem)it.getItem()).getDueDate().toString());
-            r.append("\n\t\t\t\t"+it.getSubtotal());
+            r.append(String.format("\t"+((RentalItem)it.getItem()).getDueDate().toString()));
             r.append("\n");
         }
         String result = r.toString();
@@ -105,11 +105,11 @@ public class Rental extends AbstractSale
         //can add print statement for company name address and phone number
         System.out.println();
         System.out.println("Order ID: " + orderID);
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.println("\t\tCompany Name");
         System.out.println("\t\tCompany Address");
         System.out.println("\t\tCompany Number");
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.println();
         System.out.println(date.toString());
         System.out.println();
@@ -123,10 +123,10 @@ public class Rental extends AbstractSale
             + ""
             + ""
             + "\t\t$"+ getBalance());
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.printf("Tax: \t\t\t\t\t$%.2f\n",getFinalTax());
         System.out.printf("Total: \t\t\t\t\t$%.2f\n",getFinalTotal());
-        System.out.println("---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
         System.out.printf("Amount Paid: \t\t\t\t$%.2f\n",payMe.getAmount());
 
         System.out.printf("Cash Back: \t\t\t\t$%.2f\n",(payMe.getAmount()-getFinalTotal()));
