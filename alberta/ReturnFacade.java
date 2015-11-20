@@ -61,7 +61,6 @@ public class ReturnFacade {
     public void createReturn() //Note, cannot process a return that contains both
                                 //a rental and an order/regular sale
     {
-        System.out.println("Original purchase verified");
         Return test = reg.createNewReturn(originalReturnOrderID);
         this.enterReturn(test);
     }

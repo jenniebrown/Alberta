@@ -296,6 +296,8 @@ public class DatabaseHandler{
                 System.out.println("Order number " +testID+", made on "+testDate);
                 System.out.println();
                 ret.setOriginalDate(SDF.parse(testDate));
+                stmt.close();  //Watch it
+                rs.close();
                 return true;
             }
             stmt.close();  //Watch it
@@ -517,9 +519,9 @@ public class DatabaseHandler{
                // String card_nbr = "?????????????????"; ////HEY!!!!FIX ME!!!
                 double refund = rn.getFinalTotal();
                // String paymentType = "?????????????";  /////FIX ME!!!
-                String vals = returnID+",'"+originalOrderID+"','"+date+/*"',"+card_nbr+*/
-                        ",'"+refund+/*","+paymentType+*/"'";
-                String sql = "INSERT INTO returns (ORDER_ID,DATE,ORDER_TOTAL)"+
+                String vals = returnID+","+originalOrderID+",'"+date+/*"',"+card_nbr+*/
+                        "',"+refund /*","+paymentType+*/;
+                String sql = "INSERT INTO returns (RETURN_ID,ORDER_ID,RET_DATE,REFUND)"+
                                 "VALUES ("+vals+");";
                 stmt.executeUpdate(sql);
                 c.commit();
@@ -547,15 +549,15 @@ public class DatabaseHandler{
                 ArrayList<AbstractLineItem> itemList= rn.getItems();
                 for(int i=0; i < itemList.size(); i++) {
                     String returnDate = rn.date.toString();
-                    String ins = "UPDATE rental_item_history SET RETURN_DATE= " 
-                            +returnDate+ " WHERE RENTAL_ID= "+rental_ID+
+                    String ins = "UPDATE rental_item_history SET RETURN_DATE= '" 
+                            +returnDate+ "' WHERE RENTAL_ID= "+rental_ID+
                             " AND ITEM_ID= "+itemList.get(i).getItem().getItemID()+";";
                     stmt.executeUpdate(ins);
                     c.commit();
                     ins = "SELECT DUE_DATE FROM rental_item_history WHERE RENTAL_ID= "+rental_ID+
                             " AND ITEM_ID= "+itemList.get(i).getItem().getItemID()+";";
                     rs = stmt.executeQuery(ins);
-                    secsOfReturnDate = (SDF.parse(rs.getString("DUE_DATE")).getTime() - rn.date.getTime())/ 1000;
+                    secsOfReturnDate = (rn.date.getTime() - SDF.parse(rs.getString("DUE_DATE")).getTime())/ 1000;
                     hours += (int)(secsOfReturnDate / 3600);
                 }
                 stmt.close();

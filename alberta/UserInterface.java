@@ -225,14 +225,14 @@ public class UserInterface {
                             if (findOrderAttempts == 2)
                             {
                                 System.out.println("Too many attempts to find order in history. Ending transaction");
-                                break; //Will end the switch
+                                break; ///Need to find a way out properly. This crashes it if too many fails
                             }
-                            returnFac.setROrderID(getInt());
+                            oID = getInt();
+                            returnFac.setROrderID(oID);
                             returnFac.createReturn(); //The previous return type and new returnOrderID is use.
                             findOrderAttempts++;
                         }
 
-                        //Keep an eye out. Is repeat now false because of the while loop? It shouldn't be.
                         while(repeat) {
                             System.out.print("Enter product upc of item on receipt"
                                 + ", or any non-number key to complete transaction: ");
