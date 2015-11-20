@@ -103,7 +103,7 @@ public class UserInterface {
                         boolean complete;
                         switch(paymentMethod) {
                             case 1:
-                               // System.out.print("Enter amount tendered: ");
+                               System.out.print("Enter amount tendered: ");
                                 double amt;
                                 //finish cash payment. create change yada yada
                                 do {
@@ -312,6 +312,7 @@ public class UserInterface {
                         System.out.print("ID: ");
                         int id = scan.nextInt();
                         reg.constantConnection.removeEmployee(id);
+                        System.out.println(); //prints new line 
                     } else if (val.equals("view")) {
                         for (String[] data : reg.constantConnection.getEmployees()) {
                             System.out.println("-------------------------------");
